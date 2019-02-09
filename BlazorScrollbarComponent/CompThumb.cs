@@ -47,8 +47,6 @@ namespace BlazorScrollbarComponent
             builder.AddAttribute(k++, "onmousedown", OnMouseDown);
             builder.AddAttribute(k++, "onmousemove", OnMouseMove);
 
-
-
             builder.AddAttribute(k++, "onwheel", OnWheel);
 
             builder.CloseElement();
@@ -62,8 +60,7 @@ namespace BlazorScrollbarComponent
             _parent.bsbScrollbar.CmdWhell(e.DeltaY > 0);
 
         }
-
-            
+    
         public void OnMouseMove(UIMouseEventArgs e)
         {
             if (e.Buttons == 1)
