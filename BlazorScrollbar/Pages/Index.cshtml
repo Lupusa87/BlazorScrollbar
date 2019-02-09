@@ -1,0 +1,23 @@
+﻿@page "/"
+
+
+
+@inherits Index_Logic
+
+@addTagHelper *, BlazorScrollbarComponent
+@using BlazorScrollbarComponent;
+
+<h3 style="color:darkred">This is Scrollbar sample</h3>
+
+<p>@P1</p>
+<br />
+
+
+<CompBlazorScrollbar ref="CompBlazorScrollbar1" bsbSettings="bsbSettings1"></CompBlazorScrollbar>
+
+
+<br />
+
+<p>@P2</p>
+<br />
+<CompBlazorScrollbar ref="CompBlazorScrollbar2" bsbSettings="bsbSettings2"></CompBlazorScrollbar>
