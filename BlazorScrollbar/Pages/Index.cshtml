@@ -9,19 +9,28 @@
 
 <h3 style="color:darkred">This is blazor Scrollbar prototype</h3>
 
+<br/>
 
-<h2>You can click on red buttons, drag thumb or scroll inside scrollbar</h2>
-
-
-<p>@P1</p>[]
-<br />
+<h4>You can click on red buttons, drag thumb or scroll inside scrollbar</h4>
 
 
-<CompBlazorScrollbar ref="CompBlazorScrollbar1" bsbSettings="bsbSettings1"></CompBlazorScrollbar>
+
+<table style="margin-left:100px; margin-top:50px">
+    <tr>
+        <td valign="bottom" style="margin:30px">
+            <h5>@P2</h5>
+           
+            <CompBlazorScrollbar ref="CompBlazorScrollbar2" bsbSettings="bsbSettings2"></CompBlazorScrollbar>
+        </td>
+        <td valign="top" style="margin:30px">
+            <h5>@P1</h5>
+            
+            <CompBlazorScrollbar ref="CompBlazorScrollbar1" bsbSettings="bsbSettings1"></CompBlazorScrollbar>
+        </td>
+
+    </tr>
+</table>
 
 
-<br />
 
-<p>@P2</p>
-<br />
-<CompBlazorScrollbar ref="CompBlazorScrollbar2" bsbSettings="bsbSettings2"></CompBlazorScrollbar>
+
