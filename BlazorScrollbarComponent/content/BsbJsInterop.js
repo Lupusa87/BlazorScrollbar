@@ -32,7 +32,7 @@ function stopSliding(e, el) {
 
 
 function slide(e, dotnetHelper) {
-
+    e.preventDefault();
     dotnetHelper.invokeMethodAsync('InvokeMoveFromJS', e.clientX, e.clientY);
 }
 
