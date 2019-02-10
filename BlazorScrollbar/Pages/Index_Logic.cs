@@ -20,6 +20,9 @@ namespace BlazorScrollbar.Pages
 
         public BsbSettings bsbSettings2 { get; set; } = new BsbSettings();
 
+
+        bool FirtsLoad = true;
+
         protected override void OnInit()
         {
 
@@ -33,27 +36,34 @@ namespace BlazorScrollbar.Pages
             };
 
 
-            
+
             base.OnInit();
         }
 
 
         protected override void OnAfterRender()
         {
-            CompBlazorScrollbar1.OnScroll += OnScroll1;
-            CompBlazorScrollbar2.OnScroll += OnScroll2;
+            if (FirtsLoad)
+            {
+                FirtsLoad = false;
 
-            base.OnAfterRender();
+                CompBlazorScrollbar1.OnPositionChange += OnPositionChanged1;
+                CompBlazorScrollbar2.OnPositionChange += OnPositionChanged2;
+
+                base.OnAfterRender();
+            }
+
+            
         }
 
 
-        private void OnScroll1(int p)
+        private void OnPositionChanged1(int p)
         {
             P1 = p;
             StateHasChanged();
         }
 
-        private void OnScroll2(int p)
+        private void OnPositionChanged2(int p)
         {
             P2 = p;
             StateHasChanged();

@@ -12,7 +12,10 @@ namespace BlazorScrollbarComponent.classes
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        public Action PositionChanged { get; set; }
+
+        public CompBlazorScrollbar compBlazorScrollbar = null;
+
+        //public Action<int> PositionChanged { get; set; }
 
         public string ID { get; set; }
 
@@ -32,12 +35,14 @@ namespace BlazorScrollbarComponent.classes
 
         public void ThumbMove(double p)
         {
-
+         
             Position+= p;
 
             if (Position < 0)
             {
                 Position = 0;
+
+                BsbJsInterop.StopDrag(bsbThumb.id);
             }
 
 
@@ -47,6 +52,7 @@ namespace BlazorScrollbarComponent.classes
                 if (Position >= bsbSettings.height - (bsbSettings.ButtonSize * 2) - bsbThumb.height - 1)
                 {
                     Position = bsbSettings.height - (bsbSettings.ButtonSize * 2) - bsbThumb.height;
+                    BsbJsInterop.StopDrag(bsbThumb.id);
                 }
 
             }
@@ -55,13 +61,14 @@ namespace BlazorScrollbarComponent.classes
                 if (Position >= bsbSettings.width - (bsbSettings.ButtonSize * 2) - bsbThumb.width - 1)
                 {
                     Position = bsbSettings.width - (bsbSettings.ButtonSize * 2) - bsbThumb.width;
+                    BsbJsInterop.StopDrag(bsbThumb.id);
                 }
             }
             
             SetPosition();
 
 
-            PositionChanged?.Invoke();
+           compBlazorScrollbar.OnPositionChange?.Invoke((int)Position);
         }
 
 
@@ -120,6 +127,7 @@ namespace BlazorScrollbarComponent.classes
 
                 bsbThumb = new BsbThumb
                 {
+                    id = "bsbThumb" + Guid.NewGuid().ToString("d").Substring(1, 4),
                     x = 0,
                     y = bsbSettings.ButtonSize,
                     width = bsbSettings.width,
@@ -152,7 +160,7 @@ namespace BlazorScrollbarComponent.classes
 
 
 
-                Step = bsbThumb.height;
+                Step = (int)bsbThumb.height;
                
             }
             else
@@ -180,6 +188,7 @@ namespace BlazorScrollbarComponent.classes
 
                 bsbThumb = new BsbThumb
                 {
+                    id = "bsbThumb" + Guid.NewGuid().ToString("d").Substring(1, 4),
                     x = bsbSettings.ButtonSize,
                     y = 0,
                     width = (bsbSettings.width - bsbSettings.ButtonSize * 2) / bsbSettings.MaxValue,
@@ -207,7 +216,7 @@ namespace BlazorScrollbarComponent.classes
                     fill = "red",
                 };
 
-                Step = bsbThumb.width;
+                Step = (int)bsbThumb.width;
             }
         }
 

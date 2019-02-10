@@ -24,7 +24,7 @@ namespace BlazorScrollbarComponent.classes
 
 
         public int PreviousPosition { get; set; } = 0;
-
+        public int PreviousPosition2 { get; set; } = 0;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

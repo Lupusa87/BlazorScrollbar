@@ -16,48 +16,45 @@ namespace BlazorScrollbarComponent
 
         public BsbScrollbar bsbScrollbar { get; set; } = new BsbScrollbar();
 
-        public Action<int> OnScroll { get; set; }
+
+        [Parameter]
+        public Action<int> OnPositionChange { get; set; }
 
         protected override void OnInit()
         {
             bsbScrollbar.bsbSettings = bsbSettings;
             bsbScrollbar.Initialize();
+            bsbScrollbar.compBlazorScrollbar = this;
 
+            //bsbScrollbar.PropertyChanged += BsbScrollbar_PropertyChanged;
 
-            bsbScrollbar.PropertyChanged += BsbScrollbar_PropertyChanged;
-            bsbScrollbar.PositionChanged += OnPositionChanged;
+            //bsbScrollbar.PositionChanged += OnPositionChanged;
             base.OnInit();
         }
 
 
-        private void OnPositionChanged()
-        {
-            OnScroll?.Invoke((int)bsbScrollbar.Position);
-        }
 
 
         private void BsbScrollbar_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            StateHasChanged();
+            
+//            StateHasChanged();
         }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
 
-            Cmd_Render(0, builder);
+                Cmd_Render(0, builder);
 
-            base.BuildRenderTree(builder);
-        }
-
-        protected override void OnParametersSet()
-        {
-            
-            base.OnParametersSet();
+                base.BuildRenderTree(builder);
+           
         }
 
 
         public void Cmd_Render(int k, RenderTreeBuilder builder)
         {
+
+
             builder.OpenElement(k++, "svg");
             builder.AddAttribute(k++, "id", bsbSettings.ID);
             builder.AddAttribute(k++, "width", bsbSettings.width);
@@ -100,7 +97,8 @@ namespace BlazorScrollbarComponent
 
         public void Dispose()
         {
-            bsbScrollbar.PropertyChanged -= BsbScrollbar_PropertyChanged;
+            BsbJsInterop.UnHandleDrag(bsbScrollbar.bsbThumb.id);
+           // bsbScrollbar.PropertyChanged -= BsbScrollbar_PropertyChanged;
         }
 
     }
