@@ -10,6 +10,8 @@ namespace BlazorScrollbar.Pages
 {
     public class Index_Logic : ComponentBase
     {
+    
+
         public CompBlazorScrollbar CompBlazorScrollbar1;
         public CompBlazorScrollbar CompBlazorScrollbar2;
 
@@ -31,7 +33,7 @@ namespace BlazorScrollbar.Pages
                 VerticalOrHorizontal = false,
                 width = 200,
                 height = 15,
-                MaxValue = 10,
+                ScrollSize = 1000,
 
             };
 
@@ -67,6 +69,18 @@ namespace BlazorScrollbar.Pages
         {
             P2 = p;
             StateHasChanged();
+        }
+
+        public void Cmd1()
+        {
+            //P1 = 0;
+            //StateHasChanged();
+            //CompBlazorScrollbar1.SetScrollWidth(500);
+
+
+            //CompBlazorScrollbar1.SetVisibility(true);
+
+           
         }
 
     }

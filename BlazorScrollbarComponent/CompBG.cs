@@ -21,8 +21,26 @@ namespace BlazorScrollbarComponent
 
         protected override void OnInit()
         {
-            bsbBG.PropertyChanged += BsbBG_PropertyChanged;
+            Subscribe();
             _parent = parent as CompBlazorScrollbar;
+        }
+
+        public void Subscribe()
+        {
+            bsbBG.PropertyChanged += BsbBG_PropertyChanged;
+        }
+
+
+
+        protected override void OnAfterRender()
+        {
+           
+            if (bsbBG.compBG == null)
+            {
+                bsbBG.compBG = this;
+            }
+
+            base.OnAfterRender();
         }
 
         private void BsbBG_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -32,6 +50,9 @@ namespace BlazorScrollbarComponent
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+
+
+            Console.WriteLine("BuildRenderTree CompBG");
 
             int k = -1;
 

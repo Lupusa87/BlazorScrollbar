@@ -22,13 +22,13 @@ namespace BlazorScrollbarComponent
 
         protected override void OnInit()
         {
+       
             bsbScrollbar.bsbSettings = bsbSettings;
             bsbScrollbar.Initialize();
+
             bsbScrollbar.compBlazorScrollbar = this;
+            bsbScrollbar.PropertyChanged += BsbScrollbar_PropertyChanged;
 
-            //bsbScrollbar.PropertyChanged += BsbScrollbar_PropertyChanged;
-
-            //bsbScrollbar.PositionChanged += OnPositionChanged;
             base.OnInit();
         }
 
@@ -37,16 +37,20 @@ namespace BlazorScrollbarComponent
 
         private void BsbScrollbar_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            
-//            StateHasChanged();
+                       StateHasChanged();
         }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
 
-                Cmd_Render(0, builder);
 
-                base.BuildRenderTree(builder);
+            Console.WriteLine("BuildRenderTree scrollbar component");
+
+          
+                Cmd_Render(0, builder);
+           
+
+            base.BuildRenderTree(builder);
            
         }
 
@@ -98,8 +102,20 @@ namespace BlazorScrollbarComponent
         public void Dispose()
         {
             BsbJsInterop.UnHandleDrag(bsbScrollbar.bsbThumb.id);
-           // bsbScrollbar.PropertyChanged -= BsbScrollbar_PropertyChanged;
+            bsbScrollbar.PropertyChanged -= BsbScrollbar_PropertyChanged;
         }
+
+
+        public void SetScrollWidth(double w)
+        {
+
+            bsbScrollbar.bsbSettings.ScrollSize = w;
+            bsbScrollbar.Initialize();
+
+            StateHasChanged();
+
+        }
+
 
     }
 }

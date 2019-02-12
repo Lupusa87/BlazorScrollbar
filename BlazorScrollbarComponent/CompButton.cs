@@ -32,6 +32,7 @@ namespace BlazorScrollbarComponent
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+            //Console.WriteLine("BuildRenderTree CompButton");
 
             int k = -1;
 
@@ -51,7 +52,7 @@ namespace BlazorScrollbarComponent
 
         public void Clicked(UIMouseEventArgs e)
         {
-
+            Console.WriteLine("button cliced");
             if (bsbButton.FirstOrSecond)
             {
                 _parent.bsbScrollbar.ThumbMove(-_parent.bsbScrollbar.Step);

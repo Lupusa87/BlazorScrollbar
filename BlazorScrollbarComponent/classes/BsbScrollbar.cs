@@ -35,14 +35,14 @@ namespace BlazorScrollbarComponent.classes
 
         public void ThumbMove(double p)
         {
-         
-            Position+= p;
+            Console.WriteLine("A1");
+            Position += p;
 
             if (Position < 0)
             {
                 Position = 0;
 
-                BsbJsInterop.StopDrag(bsbThumb.id);
+              //  BsbJsInterop.StopDrag(bsbThumb.id);
             }
 
 
@@ -52,28 +52,32 @@ namespace BlazorScrollbarComponent.classes
                 if (Position >= bsbSettings.height - (bsbSettings.ButtonSize * 2) - bsbThumb.height - 1)
                 {
                     Position = bsbSettings.height - (bsbSettings.ButtonSize * 2) - bsbThumb.height;
-                    BsbJsInterop.StopDrag(bsbThumb.id);
+                 //   BsbJsInterop.StopDrag(bsbThumb.id);
                 }
 
             }
             else
             {
+                Console.WriteLine("A2");
                 if (Position >= bsbSettings.width - (bsbSettings.ButtonSize * 2) - bsbThumb.width - 1)
                 {
+                    Console.WriteLine("A3");
                     Position = bsbSettings.width - (bsbSettings.ButtonSize * 2) - bsbThumb.width;
-                    BsbJsInterop.StopDrag(bsbThumb.id);
+                  //  BsbJsInterop.StopDrag(bsbThumb.id);
                 }
             }
-            
+
+            Console.WriteLine("A4");
             SetPosition();
 
-
-           compBlazorScrollbar.OnPositionChange?.Invoke((int)Position);
+            Console.WriteLine("A10");
+            compBlazorScrollbar.OnPositionChange?.Invoke((int)Position);
         }
 
 
         public void SetPosition()
         {
+            Console.WriteLine("A5");
             if (bsbSettings.VerticalOrHorizontal)
             {
                 bsbThumb.y = bsbSettings.ButtonSize + Position;
@@ -84,13 +88,17 @@ namespace BlazorScrollbarComponent.classes
 
             }
 
+            Console.WriteLine("A6");
 
             ReArrangeBGs();
 
-
+            Console.WriteLine("A7");
             bsbThumb.InvokePropertyChanged();
 
+            Console.WriteLine("A8");
             bsbBgAfterThumb.InvokePropertyChanged();
+
+            Console.WriteLine("A9");
             bsbBgBeforeThumb.InvokePropertyChanged();
         }
 
@@ -98,6 +106,9 @@ namespace BlazorScrollbarComponent.classes
 
         public void Initialize()
         {
+            
+
+
 
             if (bsbSettings.VerticalOrHorizontal)
             {
@@ -131,7 +142,7 @@ namespace BlazorScrollbarComponent.classes
                     x = 0,
                     y = bsbSettings.ButtonSize,
                     width = bsbSettings.width,
-                    height = (bsbSettings.height - bsbSettings.ButtonSize * 2) / bsbSettings.MaxValue,
+                    height = (bsbSettings.height - bsbSettings.ButtonSize * 2) * bsbSettings.height / bsbSettings.ScrollSize,
                     fill = bsbSettings.ThumbColor,
                 };
 
@@ -191,7 +202,7 @@ namespace BlazorScrollbarComponent.classes
                     id = "bsbThumb" + Guid.NewGuid().ToString("d").Substring(1, 4),
                     x = bsbSettings.ButtonSize,
                     y = 0,
-                    width = (bsbSettings.width - bsbSettings.ButtonSize * 2) / bsbSettings.MaxValue,
+                    width =  (bsbSettings.width - bsbSettings.ButtonSize * 2) * bsbSettings.width / bsbSettings.ScrollSize,
                     height = bsbSettings.height,
                     fill = bsbSettings.ThumbColor,
                 };
@@ -218,6 +229,12 @@ namespace BlazorScrollbarComponent.classes
 
                 Step = (int)bsbThumb.width;
             }
+
+
+
+            Position = 0;
+            bsbThumb.PreviousPosition = 0;
+            bsbThumb.PreviousPosition2 = 0;
         }
 
 

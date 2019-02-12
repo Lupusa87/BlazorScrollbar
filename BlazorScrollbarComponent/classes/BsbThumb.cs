@@ -13,6 +13,8 @@ namespace BlazorScrollbarComponent.classes
 
         public string id { get; set; } = null;
 
+        public CompThumb compThumb { get; set; } = null;
+        
 
         public double x { get; set; } = double.NaN;
         public double y { get; set; } = double.NaN;
@@ -28,6 +30,7 @@ namespace BlazorScrollbarComponent.classes
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
+
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
@@ -35,6 +38,33 @@ namespace BlazorScrollbarComponent.classes
 
         public void InvokePropertyChanged()
         {
+            if (compThumb == null)
+            {
+                Console.WriteLine("compThumb is null");
+            }
+            else
+            {
+                Console.WriteLine("compThumb is not null");
+            }
+
+
+
+            if (PropertyChanged == null)
+            {
+                compThumb.Subscribe();
+            }
+
+
+
+            if (PropertyChanged == null)
+            {
+                Console.WriteLine("thumb is null");
+            }
+            else
+            {
+                Console.WriteLine("thumb is not null");
+            }
+
             PropertyChanged?.Invoke(this, null);
         }
 

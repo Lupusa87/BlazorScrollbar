@@ -12,6 +12,7 @@ namespace BlazorScrollbarComponent.classes
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public CompBG compBG { get; set; } = null;
 
         public bool BeforeOrAfter { get; set; } = true;
 
@@ -34,6 +35,33 @@ namespace BlazorScrollbarComponent.classes
 
         public void InvokePropertyChanged()
         {
+            if (compBG == null)
+            {
+                Console.WriteLine("compBG is null");
+            }
+            else
+            {
+                Console.WriteLine("compBG is not null");
+            }
+
+
+
+            if (PropertyChanged == null)
+            {
+                compBG.Subscribe();
+            }
+
+
+
+            if (PropertyChanged == null)
+            {
+                Console.WriteLine("BG is null");
+            }
+            else
+            {
+                Console.WriteLine("BG is not null");
+            }
+
             PropertyChanged?.Invoke(this, null);
         }
 

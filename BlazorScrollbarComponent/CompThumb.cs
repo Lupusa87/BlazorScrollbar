@@ -29,8 +29,16 @@ namespace BlazorScrollbarComponent
         {
 
             DragMode = false;
-            bsbThumb.PropertyChanged += BsbThumb_PropertyChanged;
+
+            Subscribe();
+
             _parent = parent as CompBlazorScrollbar;
+        }
+
+
+        public void Subscribe()
+        {
+            bsbThumb.PropertyChanged += BsbThumb_PropertyChanged;
         }
 
 
@@ -41,6 +49,11 @@ namespace BlazorScrollbarComponent
 
                 FirtLoad = false;
                 BsbJsInterop.HandleDrag(bsbThumb.id, new DotNetObjectRef(this));
+            }
+
+            if (bsbThumb.compThumb == null)
+            {
+                bsbThumb.compThumb = this;
             }
 
             base.OnAfterRender();
@@ -63,7 +76,7 @@ namespace BlazorScrollbarComponent
             }
 
 
-            if (Math.Abs(bsbThumb.PreviousPosition2 - NewPosition2) < 100)
+            if (Math.Abs(bsbThumb.PreviousPosition2 - NewPosition2) < 300)
             {
                 if (bsbThumb.PreviousPosition != NewPosition)
                 {
@@ -101,6 +114,7 @@ namespace BlazorScrollbarComponent
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+           // Console.WriteLine("BuildRenderTree thumb");
 
             int k = -1;
 
@@ -226,7 +240,7 @@ namespace BlazorScrollbarComponent
 
         public void Dispose()
         {
-            bsbThumb.PropertyChanged -= BsbThumb_PropertyChanged;
+          //  bsbThumb.PropertyChanged -= BsbThumb_PropertyChanged;
         }
     }
 }
