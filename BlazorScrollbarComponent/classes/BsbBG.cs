@@ -35,14 +35,14 @@ namespace BlazorScrollbarComponent.classes
 
         public void InvokePropertyChanged()
         {
-            if (compBG == null)
-            {
-                Console.WriteLine("compBG is null");
-            }
-            else
-            {
-                Console.WriteLine("compBG is not null");
-            }
+            //if (compBG == null)
+            //{
+            //    Console.WriteLine("compBG is null");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("compBG is not null");
+            //}
 
 
 
@@ -53,14 +53,14 @@ namespace BlazorScrollbarComponent.classes
 
 
 
-            if (PropertyChanged == null)
-            {
-                Console.WriteLine("BG is null");
-            }
-            else
-            {
-                Console.WriteLine("BG is not null");
-            }
+            //if (PropertyChanged == null)
+            //{
+            //    Console.WriteLine("BG is null");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("BG is not null");
+            //}
 
             PropertyChanged?.Invoke(this, null);
         }

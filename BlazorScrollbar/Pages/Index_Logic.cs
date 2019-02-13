@@ -15,8 +15,8 @@ namespace BlazorScrollbar.Pages
         public CompBlazorScrollbar CompBlazorScrollbar1;
         public CompBlazorScrollbar CompBlazorScrollbar2;
 
-        public int P1 = 0;
-        public int P2 = 0;
+        public double P1 = 0;
+        public double P2 = 0;
 
         public BsbSettings bsbSettings1 { get; set; } = new BsbSettings();
 
@@ -28,15 +28,27 @@ namespace BlazorScrollbar.Pages
         protected override void OnInit()
         {
 
+            bsbSettings1 = new BsbSettings
+            {
+                VerticalOrHorizontal = true,
+                width = 15,
+                height = 200,
+                ScrollVisibleSize = 10,
+                ScrollTotalSize = 100,
+
+            };
+            bsbSettings1.initialize();
+
             bsbSettings2 = new BsbSettings
             {
                 VerticalOrHorizontal = false,
                 width = 200,
                 height = 15,
-                ScrollSize = 1000,
+                ScrollVisibleSize = 400,
+                ScrollTotalSize = 1000,
 
             };
-
+            bsbSettings2.initialize();
 
 
             base.OnInit();
@@ -59,13 +71,13 @@ namespace BlazorScrollbar.Pages
         }
 
 
-        private void OnPositionChanged1(int p)
+        private void OnPositionChanged1(double p)
         {
             P1 = p;
             StateHasChanged();
         }
 
-        private void OnPositionChanged2(int p)
+        private void OnPositionChanged2(double p)
         {
             P2 = p;
             StateHasChanged();

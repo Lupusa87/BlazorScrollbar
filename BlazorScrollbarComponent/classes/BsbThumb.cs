@@ -38,14 +38,14 @@ namespace BlazorScrollbarComponent.classes
 
         public void InvokePropertyChanged()
         {
-            if (compThumb == null)
-            {
-                Console.WriteLine("compThumb is null");
-            }
-            else
-            {
-                Console.WriteLine("compThumb is not null");
-            }
+            //if (compThumb == null)
+            //{
+            //    Console.WriteLine("compThumb is null");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("compThumb is not null");
+            //}
 
 
 
@@ -56,14 +56,14 @@ namespace BlazorScrollbarComponent.classes
 
 
 
-            if (PropertyChanged == null)
-            {
-                Console.WriteLine("thumb is null");
-            }
-            else
-            {
-                Console.WriteLine("thumb is not null");
-            }
+            //if (PropertyChanged == null)
+            //{
+            //    Console.WriteLine("thumb is null");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("thumb is not null");
+            //}
 
             PropertyChanged?.Invoke(this, null);
         }

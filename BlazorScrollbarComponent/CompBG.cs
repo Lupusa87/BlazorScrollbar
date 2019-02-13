@@ -52,7 +52,7 @@ namespace BlazorScrollbarComponent
         {
 
 
-            Console.WriteLine("BuildRenderTree CompBG");
+            //Console.WriteLine("BuildRenderTree CompBG");
 
             int k = -1;
 

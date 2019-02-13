@@ -18,7 +18,7 @@ namespace BlazorScrollbarComponent
 
 
         [Parameter]
-        public Action<int> OnPositionChange { get; set; }
+        public Action<double> OnPositionChange { get; set; }
 
         protected override void OnInit()
         {
@@ -37,19 +37,16 @@ namespace BlazorScrollbarComponent
 
         private void BsbScrollbar_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-                       StateHasChanged();
+          StateHasChanged();
         }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
 
+            //Console.WriteLine("BuildRenderTree scrollbar component");
 
-            Console.WriteLine("BuildRenderTree scrollbar component");
-
-          
-                Cmd_Render(0, builder);
-           
-
+            Cmd_Render(0, builder);
+ 
             base.BuildRenderTree(builder);
            
         }
@@ -106,16 +103,27 @@ namespace BlazorScrollbarComponent
         }
 
 
-        public void SetScrollWidth(double w)
+        public void SetScrollTotalWidth(double w)
         {
 
-            bsbScrollbar.bsbSettings.ScrollSize = w;
+            bsbScrollbar.bsbSettings.ScrollTotalSize = w;
+            bsbScrollbar.bsbSettings.initialize();
             bsbScrollbar.Initialize();
 
             StateHasChanged();
 
         }
 
+        public void SetScrollVisibleWidth(double w)
+        {
+
+            bsbScrollbar.bsbSettings.ScrollVisibleSize = w;
+            bsbScrollbar.bsbSettings.initialize();
+            bsbScrollbar.Initialize();
+
+            StateHasChanged();
+
+        }
 
     }
 }

@@ -35,7 +35,7 @@ namespace BlazorScrollbarComponent.classes
 
         public void ThumbMove(double p)
         {
-            Console.WriteLine("A1");
+          
             Position += p;
 
             if (Position < 0)
@@ -58,26 +58,26 @@ namespace BlazorScrollbarComponent.classes
             }
             else
             {
-                Console.WriteLine("A2");
+              
                 if (Position >= bsbSettings.width - (bsbSettings.ButtonSize * 2) - bsbThumb.width - 1)
                 {
-                    Console.WriteLine("A3");
+                  
                     Position = bsbSettings.width - (bsbSettings.ButtonSize * 2) - bsbThumb.width;
                   //  BsbJsInterop.StopDrag(bsbThumb.id);
                 }
             }
 
-            Console.WriteLine("A4");
+           
             SetPosition();
 
-            Console.WriteLine("A10");
-            compBlazorScrollbar.OnPositionChange?.Invoke((int)Position);
+         
+            compBlazorScrollbar.OnPositionChange?.Invoke(Position * bsbSettings.ScrollScale);
         }
 
 
         public void SetPosition()
         {
-            Console.WriteLine("A5");
+            
             if (bsbSettings.VerticalOrHorizontal)
             {
                 bsbThumb.y = bsbSettings.ButtonSize + Position;
@@ -88,17 +88,17 @@ namespace BlazorScrollbarComponent.classes
 
             }
 
-            Console.WriteLine("A6");
+           
 
             ReArrangeBGs();
 
-            Console.WriteLine("A7");
+            
             bsbThumb.InvokePropertyChanged();
 
-            Console.WriteLine("A8");
+         
             bsbBgAfterThumb.InvokePropertyChanged();
 
-            Console.WriteLine("A9");
+            
             bsbBgBeforeThumb.InvokePropertyChanged();
         }
 
@@ -142,7 +142,8 @@ namespace BlazorScrollbarComponent.classes
                     x = 0,
                     y = bsbSettings.ButtonSize,
                     width = bsbSettings.width,
-                    height = (bsbSettings.height - bsbSettings.ButtonSize * 2) * bsbSettings.height / bsbSettings.ScrollSize,
+                    height = bsbSettings.ThumbSize,
+
                     fill = bsbSettings.ThumbColor,
                 };
 
@@ -202,7 +203,7 @@ namespace BlazorScrollbarComponent.classes
                     id = "bsbThumb" + Guid.NewGuid().ToString("d").Substring(1, 4),
                     x = bsbSettings.ButtonSize,
                     y = 0,
-                    width =  (bsbSettings.width - bsbSettings.ButtonSize * 2) * bsbSettings.width / bsbSettings.ScrollSize,
+                    width = bsbSettings.ThumbSize,
                     height = bsbSettings.height,
                     fill = bsbSettings.ThumbColor,
                 };
