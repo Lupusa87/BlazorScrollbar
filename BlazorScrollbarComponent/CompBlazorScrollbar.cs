@@ -125,5 +125,15 @@ namespace BlazorScrollbarComponent
 
         }
 
+
+        public void SetScrollPosition(double p)
+        {
+            bsbScrollbar.Position = 0;
+            bsbScrollbar.ThumbMove(p * bsbScrollbar.bsbSettings.ScrollScale);
+            
+            StateHasChanged();
+
+        }
+
     }
 }

@@ -92,7 +92,8 @@ namespace BlazorScrollbar.Pages
 
             //CompBlazorScrollbar1.SetVisibility(true);
 
-           
+            CompBlazorScrollbar1.SetScrollPosition(0);
+            StateHasChanged();
         }
 
     }
