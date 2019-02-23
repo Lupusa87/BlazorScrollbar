@@ -18,7 +18,7 @@ namespace BlazorScrollbarComponent
 
 
         [Parameter]
-        public Action<double> OnPositionChange { get; set; }
+        public Action<int> OnPositionChange { get; set; }
 
         protected override void OnInit()
         {

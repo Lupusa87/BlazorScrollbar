@@ -15,8 +15,8 @@ namespace BlazorScrollbar.Pages
         public CompBlazorScrollbar CompBlazorScrollbar1;
         public CompBlazorScrollbar CompBlazorScrollbar2;
 
-        public double P1 = 0;
-        public double P2 = 0;
+        public int P1 = 0;
+        public int P2 = 0;
 
         public BsbSettings bsbSettings1 { get; set; } = new BsbSettings();
 
@@ -71,15 +71,17 @@ namespace BlazorScrollbar.Pages
         }
 
 
-        private void OnPositionChanged1(double p)
+        private void OnPositionChanged1(int p)
         {
             P1 = p;
+            Console.WriteLine("p" + p);
             StateHasChanged();
         }
 
-        private void OnPositionChanged2(double p)
+        private void OnPositionChanged2(int p)
         {
             P2 = p;
+            Console.WriteLine("p" + p);
             StateHasChanged();
         }
 

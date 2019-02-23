@@ -71,7 +71,7 @@ namespace BlazorScrollbarComponent.classes
             SetPosition();
 
          
-            compBlazorScrollbar.OnPositionChange?.Invoke(Position * bsbSettings.ScrollScale);
+            compBlazorScrollbar.OnPositionChange?.Invoke((int)(Position * bsbSettings.ScrollScale));
         }
 
 
