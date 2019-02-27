@@ -20,6 +20,9 @@ namespace BlazorScrollbarComponent
         [Parameter]
         public Action<int> OnPositionChange { get; set; }
 
+
+        public int CurrentPosition { get; set; } = 0;
+
         protected override void OnInit()
         {
        
@@ -133,6 +136,17 @@ namespace BlazorScrollbarComponent
             
             StateHasChanged();
 
+        }
+
+
+        public bool IsOnMinPosition()
+        {
+            return bsbScrollbar.Position == 0;
+        }
+
+        public bool IsOnMaxPosition()
+        {
+            return bsbScrollbar.Position == bsbScrollbar.MaxPosition;
         }
 
     }
