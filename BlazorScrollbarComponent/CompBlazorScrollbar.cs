@@ -16,6 +16,9 @@ namespace BlazorScrollbarComponent
         [Parameter]
         public Action<double> OnPositionChange { get; set; }
 
+        [Parameter]
+        public bool ReactOnParentRefresh { get; set; } = true;
+
         internal BsbScrollbar bsbScrollbar { get; set; } = new BsbScrollbar();
 
         public bool IsVisible { get; private set; }
@@ -33,12 +36,13 @@ namespace BlazorScrollbarComponent
 
         protected override void OnParametersSet()
         {
+            if (ReactOnParentRefresh)
+            {
+                bsbScrollbar.bsbSettings = bsbSettings;
+                bsbScrollbar.Initialize();
 
-            bsbScrollbar.bsbSettings = bsbSettings;
-            bsbScrollbar.Initialize();
-
-            IsVisible = bsbScrollbar.bsbSettings.initialize();
-
+                IsVisible = bsbScrollbar.bsbSettings.initialize();
+            }
 
             base.OnParametersSet();
         }
@@ -157,7 +161,7 @@ namespace BlazorScrollbarComponent
             if (IsVisible)
             {
                 bsbScrollbar.Position = 0;
-                bsbScrollbar.ThumbMove(p * bsbScrollbar.bsbSettings.ScrollScale);
+                bsbScrollbar.ThumbMove(p / bsbScrollbar.bsbSettings.ScrollScale);
 
                 StateHasChanged();
             }

@@ -23,35 +23,42 @@ namespace BlazorScrollbar.Pages
         public BsbSettings bsbSettings2 { get; set; } = new BsbSettings();
 
 
-        bool FirtsLoad = true;
+        public bool FirtsLoad = true;
 
         protected override void OnInit()
         {
 
-            bsbSettings1 = new BsbSettings
+            bsbSettings1 = new BsbSettings("VericalScroll")
             {
                 VerticalOrHorizontal = true,
                 width = 15,
                 height = 200,
                 ScrollVisibleSize = 100,
                 ScrollTotalSize = 1000,
+                //bsbStyle = new BsbStyle
+                //{
+                //    ThumbWayColor = "lightgreen",
+                //    ThumbColor = "red",
+                //    ButtonColor = "green"
+                //}
 
             };
             bsbSettings1.initialize();
 
-            bsbSettings2 = new BsbSettings
+
+            bsbSettings2 = new BsbSettings("HorizontalScroll")
             {
                 VerticalOrHorizontal = false,
                 width = 200,
                 height = 15,
                 ScrollVisibleSize = 400,
                 ScrollTotalSize = 1000,
-                bsbStyle = new BsbStyle
-                {
-                    ThumbWayColor = "lightgreen",
-                    ThumbColor = "red",
-                    ButtonColor = "green"
-                }
+                //bsbStyle = new BsbStyle
+                //{
+                //    ThumbWayColor = "lightgreen",
+                //    ThumbColor = "red",
+                //    ButtonColor = "green"
+                //}
             };
             bsbSettings2.initialize();
 
@@ -66,20 +73,21 @@ namespace BlazorScrollbar.Pages
             {
                 FirtsLoad = false;
 
-                CompBlazorScrollbar1.OnPositionChange += OnPositionChanged1;
-                CompBlazorScrollbar2.OnPositionChange += OnPositionChanged2;
+                CompBlazorScrollbar1.OnPositionChange = OnPositionChanged1;
+                CompBlazorScrollbar2.OnPositionChange = OnPositionChanged2;
 
-                base.OnAfterRender();
+                
             }
 
-            
+            base.OnAfterRender();
+
         }
 
 
         private void OnPositionChanged1(double p)
         {
+           
             P1 = (int)p;
-         
             StateHasChanged();
         }
 

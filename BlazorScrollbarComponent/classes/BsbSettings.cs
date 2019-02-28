@@ -73,11 +73,6 @@ namespace BlazorScrollbarComponent.classes
 
                 ScrollScale = (ScrollTotalSize - ScrollVisibleSize) / ThumbWaySize;
 
-
-                Console.WriteLine(ScrollTotalSize);
-                Console.WriteLine(ScrollVisibleSize);
-                Console.WriteLine(ThumbWaySize);
-                Console.WriteLine(ScrollScale);
             }
 
 

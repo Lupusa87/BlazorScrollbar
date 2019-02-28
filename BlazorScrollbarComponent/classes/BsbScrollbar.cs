@@ -31,7 +31,7 @@ namespace BlazorScrollbarComponent.classes
 
         internal void ThumbMove(double p)
         {
-
+          
             Position += p;
 
             if (Position < 0)
@@ -53,7 +53,7 @@ namespace BlazorScrollbarComponent.classes
 
             compBlazorScrollbar.CurrentPosition = Position * bsbSettings.ScrollScale;
 
-            Console.WriteLine("CurrentPosition" + compBlazorScrollbar.CurrentPosition);
+         
             compBlazorScrollbar.OnPositionChange?.Invoke(compBlazorScrollbar.CurrentPosition);
         }
 
