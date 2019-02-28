@@ -33,8 +33,8 @@ namespace BlazorScrollbar.Pages
                 VerticalOrHorizontal = true,
                 width = 15,
                 height = 200,
-                ScrollVisibleSize = 10,
-                ScrollTotalSize = 100,
+                ScrollVisibleSize = 100,
+                ScrollTotalSize = 1000,
 
             };
             bsbSettings1.initialize();
@@ -46,7 +46,12 @@ namespace BlazorScrollbar.Pages
                 height = 15,
                 ScrollVisibleSize = 400,
                 ScrollTotalSize = 1000,
-
+                bsbStyle = new BsbStyle
+                {
+                    ThumbWayColor = "lightgreen",
+                    ThumbColor = "red",
+                    ButtonColor = "green"
+                }
             };
             bsbSettings2.initialize();
 
@@ -71,17 +76,17 @@ namespace BlazorScrollbar.Pages
         }
 
 
-        private void OnPositionChanged1(int p)
+        private void OnPositionChanged1(double p)
         {
-            P1 = p;
-            Console.WriteLine("p" + p);
+            P1 = (int)p;
+         
             StateHasChanged();
         }
 
-        private void OnPositionChanged2(int p)
+        private void OnPositionChanged2(double p)
         {
-            P2 = p;
-            Console.WriteLine("p" + p);
+            P2 = (int)p;
+           
             StateHasChanged();
         }
 

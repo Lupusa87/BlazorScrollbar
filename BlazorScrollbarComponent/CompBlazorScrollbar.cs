@@ -13,49 +13,62 @@ namespace BlazorScrollbarComponent
         [Parameter]
         protected BsbSettings bsbSettings { get; set; }
 
-
-        public BsbScrollbar bsbScrollbar { get; set; } = new BsbScrollbar();
-
-
         [Parameter]
-        public Action<int> OnPositionChange { get; set; }
+        public Action<double> OnPositionChange { get; set; }
 
+        internal BsbScrollbar bsbScrollbar { get; set; } = new BsbScrollbar();
 
-        public int CurrentPosition { get; set; } = 0;
+        public bool IsVisible { get; private set; }
+
+        public double CurrentPosition { get; internal set; } = 0;
 
         protected override void OnInit()
         {
-       
-            bsbScrollbar.bsbSettings = bsbSettings;
-            bsbScrollbar.Initialize();
-
             bsbScrollbar.compBlazorScrollbar = this;
-            bsbScrollbar.PropertyChanged += BsbScrollbar_PropertyChanged;
+            bsbScrollbar.PropertyChanged = BsbScrollbar_PropertyChanged;
 
             base.OnInit();
         }
 
 
-
-
-        private void BsbScrollbar_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnParametersSet()
         {
-          StateHasChanged();
+
+            bsbScrollbar.bsbSettings = bsbSettings;
+            bsbScrollbar.Initialize();
+
+            IsVisible = bsbScrollbar.bsbSettings.initialize();
+
+
+            base.OnParametersSet();
+        }
+
+
+
+
+        private void BsbScrollbar_PropertyChanged()
+        {
+            if (IsVisible)
+            {
+                StateHasChanged();
+            }
         }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
 
-            //Console.WriteLine("BuildRenderTree scrollbar component");
+            if (IsVisible)
+            {
+                Cmd_Render(0, builder);
+            }
 
-            Cmd_Render(0, builder);
- 
+
             base.BuildRenderTree(builder);
            
         }
 
 
-        public void Cmd_Render(int k, RenderTreeBuilder builder)
+        private void Cmd_Render(int k, RenderTreeBuilder builder)
         {
 
 
@@ -102,52 +115,96 @@ namespace BlazorScrollbarComponent
         public void Dispose()
         {
             BsbJsInterop.UnHandleDrag(bsbScrollbar.bsbThumb.id);
-            bsbScrollbar.PropertyChanged -= BsbScrollbar_PropertyChanged;
+            
         }
 
 
         public void SetScrollTotalWidth(double w)
         {
-
+          
             bsbScrollbar.bsbSettings.ScrollTotalSize = w;
-            bsbScrollbar.bsbSettings.initialize();
-            bsbScrollbar.Initialize();
 
-            StateHasChanged();
+     
+            IsVisible = bsbScrollbar.bsbSettings.initialize();
+            if (IsVisible)
+            {
+                bsbScrollbar.Initialize();
+
+                StateHasChanged();
+            }
+            
 
         }
 
         public void SetScrollVisibleWidth(double w)
         {
+            
+                bsbScrollbar.bsbSettings.ScrollVisibleSize = w;
+            IsVisible = bsbScrollbar.bsbSettings.initialize();
 
-            bsbScrollbar.bsbSettings.ScrollVisibleSize = w;
-            bsbScrollbar.bsbSettings.initialize();
-            bsbScrollbar.Initialize();
+            if (IsVisible)
+            {
+                bsbScrollbar.Initialize();
 
-            StateHasChanged();
+                StateHasChanged();
+            }
 
         }
 
 
         public void SetScrollPosition(double p)
         {
-            bsbScrollbar.Position = 0;
-            bsbScrollbar.ThumbMove(p * bsbScrollbar.bsbSettings.ScrollScale);
-            
-            StateHasChanged();
+            if (IsVisible)
+            {
+                bsbScrollbar.Position = 0;
+                bsbScrollbar.ThumbMove(p * bsbScrollbar.bsbSettings.ScrollScale);
+
+                StateHasChanged();
+            }
 
         }
 
 
+        public void ThumbMove(double p)
+        {
+            if (IsVisible)
+            {
+                bsbScrollbar.ThumbMove(p / bsbScrollbar.bsbSettings.ScrollScale); 
+            }
+        }
+
         public bool IsOnMinPosition()
         {
-            return bsbScrollbar.Position == 0;
+            if (IsVisible)
+            {
+                return bsbScrollbar.Position == 0;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool IsOnMaxPosition()
         {
-            return bsbScrollbar.Position == bsbScrollbar.MaxPosition;
+            if (IsVisible)
+            {
+                return bsbScrollbar.Position == bsbScrollbar.MaxPosition;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
 
+
+        public void DoWheel(bool IsForward)
+        {
+            if (IsVisible)
+            {
+                bsbScrollbar.CmdWhell(IsForward);
+            }
+        }
     }
 }

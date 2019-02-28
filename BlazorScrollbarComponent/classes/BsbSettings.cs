@@ -6,45 +6,82 @@ namespace BlazorScrollbarComponent.classes
 {
     public class BsbSettings
     {
-        public string ID { get; set; } = "Scrollbar1";
+        public string ID { get; private set; }
 
         public bool VerticalOrHorizontal { get; set; } = true;
 
         public double width { get; set; } = 15;
         public double height { get; set; } = 200;
 
-        public double ButtonSize { get; set; } = 15;
+        internal double ButtonSize { get; set; } = 15;
 
+        public bool IsVisible { get; private set; }
 
-        public double ThumbWaySize { get; set; } = 0;
-        public double ThumbSize { get; set; } = 0;
+        internal double ThumbWaySize { get; set; } = 0;
+        internal double ThumbSize { get; private set; } = 0;
 
         public double ScrollVisibleSize { get; set; } = 200;
         public double ScrollTotalSize { get; set; } = 1000;
 
+        public BsbStyle bsbStyle { get; set; } = new BsbStyle();
 
-        public double ScrollScale { get; set; } = 0;
-
-        public string BGColor { get; set; } = "silver";
-        public string ThumbColor { get; set; } = "gray";
+        internal double ScrollScale { get; set; } = 1.0;
 
 
-        public void initialize()
+        public BsbSettings (string ScrollBarID = "ScrollBar")
         {
-            if (VerticalOrHorizontal)
+            if (string.IsNullOrEmpty(ScrollBarID))
             {
-                ThumbWaySize = height - ButtonSize * 2;
+                ID = ScrollBarID + Guid.NewGuid().ToString("d").Substring(1, 4);
             }
             else
             {
-                ThumbWaySize = width - ButtonSize * 2;
+                ID = "ScrollBar" + Guid.NewGuid().ToString("d").Substring(1, 4);
+            }
+        }
+
+
+        public bool initialize()
+        {
+
+            IsVisible = ScrollTotalSize > ScrollVisibleSize;
+
+            if (IsVisible)
+            {
+
+                if (VerticalOrHorizontal)
+                {
+                    ThumbWaySize = height - ButtonSize * 2;
+                }
+                else
+                {
+                    ThumbWaySize = width - ButtonSize * 2;
+                }
+
+
+
+                ThumbSize = ScrollVisibleSize * ThumbWaySize / ScrollTotalSize;
+
+
+                if (ThumbSize < ButtonSize)
+                {
+                    ThumbSize = ButtonSize;
+
+                }
+
+                ThumbWaySize -= ThumbSize;
+
+                ScrollScale = (ScrollTotalSize - ScrollVisibleSize) / ThumbWaySize;
+
+
+                Console.WriteLine(ScrollTotalSize);
+                Console.WriteLine(ScrollVisibleSize);
+                Console.WriteLine(ThumbWaySize);
+                Console.WriteLine(ScrollScale);
             }
 
 
-           ThumbSize = ScrollVisibleSize / ScrollTotalSize * ThumbWaySize;
-
-           ScrollScale = ScrollTotalSize / ThumbWaySize;
-      
+            return IsVisible;
         }
     }
 }

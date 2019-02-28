@@ -16,14 +16,14 @@ namespace BlazorScrollbarComponent
 
 
         [Parameter]
-        protected BsbThumb bsbThumb { get; set; }
+        internal BsbThumb bsbThumb { get; set; }
 
-        public CompBlazorScrollbar _parent;
+        private CompBlazorScrollbar _parent;
 
 
-        public bool DragMode = false;
+        private bool DragMode = false;
 
-        public bool FirtLoad = true;
+        private bool FirtLoad = true;
 
         protected override void OnInit()
         {
@@ -36,9 +36,9 @@ namespace BlazorScrollbarComponent
         }
 
 
-        public void Subscribe()
+        internal void Subscribe()
         {
-            bsbThumb.PropertyChanged += BsbThumb_PropertyChanged;
+            bsbThumb.PropertyChanged = BsbThumb_PropertyChanged;
         }
 
 
@@ -76,7 +76,7 @@ namespace BlazorScrollbarComponent
             }
 
 
-            if (Math.Abs(bsbThumb.PreviousPosition2 - NewPosition2) < 300)
+            if (Math.Abs(bsbThumb.PreviousPosition2 - NewPosition2) < 300) //300 is outside limit 
             {
                 if (bsbThumb.PreviousPosition != NewPosition)
                 {
@@ -107,14 +107,13 @@ namespace BlazorScrollbarComponent
         }
 
 
-        private void BsbThumb_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void BsbThumb_PropertyChanged()
         {
             StateHasChanged();
         }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-           // Console.WriteLine("BuildRenderTree thumb");
 
             int k = -1;
 
@@ -142,13 +141,13 @@ namespace BlazorScrollbarComponent
         }
 
 
-        public void OnWheel(UIWheelEventArgs e)
+        private void OnWheel(UIWheelEventArgs e)
         {
             _parent.bsbScrollbar.CmdWhell(e.DeltaY > 0);
 
         }
 
-        public void OnMouseMove(UIMouseEventArgs e)
+        private void OnMouseMove(UIMouseEventArgs e)
         {
             if (e.Buttons == 1)
             {
@@ -171,7 +170,7 @@ namespace BlazorScrollbarComponent
             }
         }
 
-        public void OnMouseDown(UIMouseEventArgs e)
+        private void OnMouseDown(UIMouseEventArgs e)
         {
             if (_parent.bsbScrollbar.bsbSettings.VerticalOrHorizontal)
             {
@@ -184,7 +183,7 @@ namespace BlazorScrollbarComponent
         }
 
 
-        public void OnPointerMove(UIPointerEventArgs e)
+        private void OnPointerMove(UIPointerEventArgs e)
         {
             if (DragMode)
             {
@@ -212,7 +211,7 @@ namespace BlazorScrollbarComponent
             }
         }
 
-        public void OnPointerDown(UIPointerEventArgs e)
+        private void OnPointerDown(UIPointerEventArgs e)
         {
 
 
@@ -230,7 +229,7 @@ namespace BlazorScrollbarComponent
         }
 
 
-        public void OnPointerUp(UIPointerEventArgs e)
+        private void OnPointerUp(UIPointerEventArgs e)
         {
 
 

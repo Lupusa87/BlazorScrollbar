@@ -7,37 +7,31 @@ using System.Text;
 
 namespace BlazorScrollbarComponent.classes
 {
-    public class BsbScrollbar : INotifyPropertyChanged
+    internal class BsbScrollbar 
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        internal Action PropertyChanged;
 
+        internal CompBlazorScrollbar compBlazorScrollbar = null;
 
+        internal BsbSettings bsbSettings { get; set; }
 
-        public CompBlazorScrollbar compBlazorScrollbar = null;
+        internal BsbButton bsbButton1 { get; set; }
+        internal BsbButton bsbButton2 { get; set; }
 
-        //public Action<int> PositionChanged { get; set; }
+        internal BsbBG bsbBgBeforeThumb { get; set; }
+        internal BsbBG bsbBgAfterThumb { get; set; }
 
-        public string ID { get; set; }
+        internal BsbThumb bsbThumb { get; set; }
 
-        public BsbSettings bsbSettings { get; set; }
+        internal double Position { get; set; } = 0;
 
-        public BsbButton bsbButton1 { get; set; }
-        public BsbButton bsbButton2 { get; set; }
+        internal double MaxPosition { get; set; } = 0;
 
-        public BsbBG bsbBgBeforeThumb { get; set; }
-        public BsbBG bsbBgAfterThumb { get; set; }
+        internal double Step { get; set; } = 0;
 
-        public BsbThumb bsbThumb { get; set; }
-
-        public double Position { get; set; } = 0;
-
-        public double MaxPosition { get; set; } = 0;
-
-        public double Step { get; set; } = 0;
-
-        public void ThumbMove(double p)
+        internal void ThumbMove(double p)
         {
-          
+
             Position += p;
 
             if (Position < 0)
@@ -55,12 +49,16 @@ namespace BlazorScrollbarComponent.classes
 
             SetPosition();
 
-            compBlazorScrollbar.CurrentPosition = (int)(Position * bsbSettings.ScrollScale);
+
+
+            compBlazorScrollbar.CurrentPosition = Position * bsbSettings.ScrollScale;
+
+            Console.WriteLine("CurrentPosition" + compBlazorScrollbar.CurrentPosition);
             compBlazorScrollbar.OnPositionChange?.Invoke(compBlazorScrollbar.CurrentPosition);
         }
 
 
-        public void SetPosition()
+        internal void SetPosition()
         {
             
             if (bsbSettings.VerticalOrHorizontal)
@@ -89,12 +87,12 @@ namespace BlazorScrollbarComponent.classes
 
 
 
-        public void Initialize()
+        internal void Initialize()
         {
+
+         
+
             
-
-
-
             if (bsbSettings.VerticalOrHorizontal)
             {
 
@@ -105,7 +103,7 @@ namespace BlazorScrollbarComponent.classes
                     y = 0,
                     width = bsbSettings.width,
                     height = bsbSettings.ButtonSize,
-                    fill = "red",
+                    fill = bsbSettings.bsbStyle.ButtonColor,
                 };
 
 
@@ -117,19 +115,19 @@ namespace BlazorScrollbarComponent.classes
                     y = bsbSettings.ButtonSize,
                     width = bsbSettings.width,
                     height = 0,
-                    fill = bsbSettings.BGColor,
+                    fill = bsbSettings.bsbStyle.ThumbWayColor,
                 };
 
 
                 bsbThumb = new BsbThumb
                 {
-                    id = "bsbThumb" + Guid.NewGuid().ToString("d").Substring(1, 4),
+                    id = bsbSettings.ID+ "bsbThumb",
                     x = 0,
                     y = bsbSettings.ButtonSize,
                     width = bsbSettings.width,
                     height = bsbSettings.ThumbSize,
 
-                    fill = bsbSettings.ThumbColor,
+                    fill = bsbSettings.bsbStyle.ThumbColor,
                 };
 
 
@@ -140,7 +138,7 @@ namespace BlazorScrollbarComponent.classes
                     y = bsbThumb.y + bsbThumb.height,
                     width = bsbSettings.width,
                     height = bsbSettings.height - bsbThumb.y - bsbThumb.height - bsbSettings.ButtonSize,
-                    fill = bsbSettings.BGColor,
+                    fill = bsbSettings.bsbStyle.ThumbWayColor,
                 };
 
 
@@ -151,13 +149,13 @@ namespace BlazorScrollbarComponent.classes
                     y = bsbSettings.height - bsbSettings.ButtonSize,
                     width = bsbSettings.width,
                     height = bsbSettings.ButtonSize,
-                    fill = "red",
+                    fill = bsbSettings.bsbStyle.ButtonColor,
                 };
 
 
 
 
-                Step = (int)bsbThumb.height;
+                Step = bsbThumb.height;
                 
             }
             else
@@ -169,7 +167,7 @@ namespace BlazorScrollbarComponent.classes
                     y = 0,
                     width = bsbSettings.ButtonSize,
                     height = bsbSettings.height,
-                    fill = "red",
+                    fill = bsbSettings.bsbStyle.ButtonColor,
                 };
 
                 bsbBgBeforeThumb = new BsbBG
@@ -179,18 +177,18 @@ namespace BlazorScrollbarComponent.classes
                     y = 0,
                     width = 0,
                     height = bsbSettings.height,
-                    fill = bsbSettings.BGColor,
+                    fill = bsbSettings.bsbStyle.ThumbWayColor,
                 };
 
 
                 bsbThumb = new BsbThumb
                 {
-                    id = "bsbThumb" + Guid.NewGuid().ToString("d").Substring(1, 4),
+                    id = bsbSettings.ID + "bsbThumb",
                     x = bsbSettings.ButtonSize,
                     y = 0,
                     width = bsbSettings.ThumbSize,
                     height = bsbSettings.height,
-                    fill = bsbSettings.ThumbColor,
+                    fill = bsbSettings.bsbStyle.ThumbColor,
                 };
 
                 bsbBgAfterThumb = new BsbBG
@@ -200,7 +198,7 @@ namespace BlazorScrollbarComponent.classes
                     y = 0,
                     width = bsbSettings.width - bsbSettings.ButtonSize - bsbThumb.width - bsbSettings.ButtonSize,
                     height = bsbSettings.height,
-                    fill = bsbSettings.BGColor,
+                    fill = bsbSettings.bsbStyle.ThumbWayColor,
                 };
 
                 bsbButton2 = new BsbButton
@@ -210,10 +208,10 @@ namespace BlazorScrollbarComponent.classes
                     y = 0,
                     width = bsbSettings.ButtonSize,
                     height = bsbSettings.height,
-                    fill = "red",
+                    fill = bsbSettings.bsbStyle.ButtonColor,
                 };
 
-                Step = (int)bsbThumb.width;
+                Step = bsbThumb.width;
             }
 
 
@@ -222,20 +220,20 @@ namespace BlazorScrollbarComponent.classes
 
             if (bsbSettings.VerticalOrHorizontal)
             {
-               MaxPosition = bsbSettings.height - (bsbSettings.ButtonSize * 2) - bsbThumb.height;
+               MaxPosition = bsbSettings.height - (bsbSettings.ButtonSize * 2) - bsbSettings.ThumbSize;
             }
             else
             {
-               MaxPosition = bsbSettings.width - (bsbSettings.ButtonSize * 2) - bsbThumb.width;
+               MaxPosition = bsbSettings.width - (bsbSettings.ButtonSize * 2) - bsbSettings.ThumbSize;
             }
 
-
+         
             bsbThumb.PreviousPosition = 0;
             bsbThumb.PreviousPosition2 = 0;
         }
 
 
-        public void ReArrangeBGs()
+        internal void ReArrangeBGs()
         {
             if (bsbSettings.VerticalOrHorizontal)
             {
@@ -254,7 +252,7 @@ namespace BlazorScrollbarComponent.classes
         }
 
 
-        public void CmdWhell(bool IsForward)
+        internal void CmdWhell(bool IsForward)
         {
            
                 if (IsForward)
@@ -268,16 +266,11 @@ namespace BlazorScrollbarComponent.classes
             
         }
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+
+
+        internal void InvokePropertyChanged()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
-
-        public void InvokePropertyChanged()
-        {
-            PropertyChanged?.Invoke(this, null);
+            PropertyChanged?.Invoke();
         }
 
     }

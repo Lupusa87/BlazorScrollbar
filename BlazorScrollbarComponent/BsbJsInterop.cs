@@ -6,43 +6,42 @@ using System.Threading.Tasks;
 
 namespace BlazorScrollbarComponent
 {
-    public class BsbJsInterop
+    internal class BsbJsInterop
     {
-        public static Task<bool> Alert(string msg)
+        internal static Task<bool> Alert(string msg)
         {
-          
             return JSRuntime.Current.InvokeAsync<bool>(
                 "BsbJsFunctions.alertmsg", msg);
         }
-        public static Task<bool> HandleDrag(string elementID, DotNetObjectRef dotnetHelper)
+
+        internal static Task<bool> HandleDrag(string elementID, DotNetObjectRef dotnetHelper)
         {
-         
             return JSRuntime.Current.InvokeAsync<bool>(
                 "BsbJsFunctions.handleDrag", elementID, dotnetHelper);
         }
 
-        public static Task<bool> UnHandleDrag(string elementID)
+        internal static Task<bool> UnHandleDrag(string elementID)
         {
            
             return JSRuntime.Current.InvokeAsync<bool>(
                 "BsbJsFunctions.unHandleDrag", elementID);
         }
 
-        public static Task<bool> StopDrag(string elementID)
+        internal static Task<bool> StopDrag(string elementID)
         {
           
             return JSRuntime.Current.InvokeAsync<bool>(
                 "BsbJsFunctions.stopDrag", elementID);
         }
 
-        
 
-        //public static Task<bool> SetPointerCapture(string elementID, string pointerID)
+
+        //internal static Task<bool> SetPointerCapture(string elementID, string pointerID)
         //{
         //    return JSRuntime.Current.InvokeAsync<bool>(
         //        "BsbJsFunctions.setCapture", elementID, pointerID);
         //}
-        //public static Task<bool> releasePointerCapture(string elementID, string pointerID)
+        //internal static Task<bool> releasePointerCapture(string elementID, string pointerID)
         //{
         //    return JSRuntime.Current.InvokeAsync<bool>(
         //        "BsbJsFunctions.releasePCapture", elementID, pointerID);

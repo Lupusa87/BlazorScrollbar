@@ -7,35 +7,23 @@ using System.Text;
 namespace BlazorScrollbarComponent.classes
 {
 
-    public class BsbButton : INotifyPropertyChanged
+    internal class BsbButton : BsbBaseProps
     {
 
-        public event PropertyChangedEventHandler PropertyChanged;
+
+        internal bool FirstOrSecond { get; set; } = true;
+
+
+        //protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
 
 
 
-        public bool FirstOrSecond { get; set; } = true;
-
-        public string id { get; set; } = null;
-
-        public double x { get; set; } = double.NaN;
-        public double y { get; set; } = double.NaN;
-
-        public double width { get; set; } = double.NaN;
-        public double height { get; set; } = double.NaN;
-        public string style { get; set; } = null;
-        public string fill { get; set; } = null;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        internal void InvokePropertyChanged()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
-
-        public void InvokePropertyChanged()
-        {
-            PropertyChanged?.Invoke(this, null);
+            PropertyChanged?.Invoke();
         }
 
     }

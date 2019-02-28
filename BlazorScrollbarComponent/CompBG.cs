@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BlazorScrollbarComponent
 {
-    public class CompBG : ComponentBase, IDisposable
+    internal class CompBG : ComponentBase, IDisposable
     {
         [Parameter]
         protected ComponentBase parent { get; set; }
@@ -17,7 +17,7 @@ namespace BlazorScrollbarComponent
         [Parameter]
         protected BsbBG bsbBG { get; set; }
 
-        public CompBlazorScrollbar _parent;
+        private CompBlazorScrollbar _parent;
 
         protected override void OnInit()
         {
@@ -25,9 +25,9 @@ namespace BlazorScrollbarComponent
             _parent = parent as CompBlazorScrollbar;
         }
 
-        public void Subscribe()
+        internal void Subscribe()
         {
-            bsbBG.PropertyChanged += BsbBG_PropertyChanged;
+            bsbBG.PropertyChanged = BsbBG_PropertyChanged;
         }
 
 
@@ -43,16 +43,13 @@ namespace BlazorScrollbarComponent
             base.OnAfterRender();
         }
 
-        private void BsbBG_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void BsbBG_PropertyChanged()
         {
             StateHasChanged();
         }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-
-
-            //Console.WriteLine("BuildRenderTree CompBG");
 
             int k = -1;
 
@@ -78,7 +75,7 @@ namespace BlazorScrollbarComponent
 
         }
 
-        public void Clicked(UIMouseEventArgs e)
+        private void Clicked(UIMouseEventArgs e)
         {
             if (bsbBG.BeforeOrAfter)
             {
@@ -95,7 +92,7 @@ namespace BlazorScrollbarComponent
 
         public void Dispose()
         {
-            bsbBG.PropertyChanged -= BsbBG_PropertyChanged;
+           
         }
     }
 }
