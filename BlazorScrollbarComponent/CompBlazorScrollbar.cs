@@ -161,7 +161,26 @@ namespace BlazorScrollbarComponent
             if (IsVisible)
             {
                 bsbScrollbar.Position = 0;
-                bsbScrollbar.ThumbMove(p / bsbScrollbar.bsbSettings.ScrollScale);
+
+                if (p == 0)
+                {
+                    bsbScrollbar.ThumbMove(0);
+                }
+                else
+                { 
+                    bsbScrollbar.ThumbMove(p / bsbScrollbar.bsbSettings.ScrollScale);
+                }
+                StateHasChanged();
+            }
+
+        }
+
+        public void SetMaxScrollPosition()
+        {
+            if (IsVisible)
+            {
+                // value is more then max but it will be limited to max inside this method
+                bsbScrollbar.ThumbMove(bsbScrollbar.bsbSettings.ScrollTotalSize / bsbScrollbar.bsbSettings.ScrollScale);
 
                 StateHasChanged();
             }
