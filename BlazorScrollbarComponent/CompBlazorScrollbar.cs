@@ -1,6 +1,7 @@
 ﻿using BlazorScrollbarComponent.classes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,9 @@ namespace BlazorScrollbarComponent
 {
     public class CompBlazorScrollbar: ComponentBase,IDisposable
     {
+        [Inject]
+        private IJSRuntime jsRuntimeCurrent { get; set; }
+
         [Parameter]
         protected BsbSettings bsbSettings { get; set; }
 
@@ -27,6 +31,9 @@ namespace BlazorScrollbarComponent
 
         protected override void OnInit()
         {
+
+            BsbJsInterop.jsRuntime = jsRuntimeCurrent;
+
             bsbScrollbar.compBlazorScrollbar = this;
             bsbScrollbar.PropertyChanged = BsbScrollbar_PropertyChanged;
 

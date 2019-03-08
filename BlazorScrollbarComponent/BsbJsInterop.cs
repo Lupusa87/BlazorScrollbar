@@ -8,29 +8,31 @@ namespace BlazorScrollbarComponent
 {
     internal class BsbJsInterop
     {
+        internal static IJSRuntime jsRuntime;
+
         internal static Task<bool> Alert(string msg)
         {
-            return JSRuntime.Current.InvokeAsync<bool>(
+            return jsRuntime.InvokeAsync<bool>(
                 "BsbJsFunctions.alertmsg", msg);
         }
 
         internal static Task<bool> HandleDrag(string elementID, DotNetObjectRef dotnetHelper)
         {
-            return JSRuntime.Current.InvokeAsync<bool>(
+            return jsRuntime.InvokeAsync<bool>(
                 "BsbJsFunctions.handleDrag", elementID, dotnetHelper);
         }
 
         internal static Task<bool> UnHandleDrag(string elementID)
         {
            
-            return JSRuntime.Current.InvokeAsync<bool>(
+            return jsRuntime.InvokeAsync<bool>(
                 "BsbJsFunctions.unHandleDrag", elementID);
         }
 
         internal static Task<bool> StopDrag(string elementID)
         {
           
-            return JSRuntime.Current.InvokeAsync<bool>(
+            return jsRuntime.InvokeAsync<bool>(
                 "BsbJsFunctions.stopDrag", elementID);
         }
 
@@ -38,12 +40,12 @@ namespace BlazorScrollbarComponent
 
         //internal static Task<bool> SetPointerCapture(string elementID, string pointerID)
         //{
-        //    return JSRuntime.Current.InvokeAsync<bool>(
+        //    return jsRuntime.InvokeAsync<bool>(
         //        "BsbJsFunctions.setCapture", elementID, pointerID);
         //}
         //internal static Task<bool> releasePointerCapture(string elementID, string pointerID)
         //{
-        //    return JSRuntime.Current.InvokeAsync<bool>(
+        //    return jsRuntime.InvokeAsync<bool>(
         //        "BsbJsFunctions.releasePCapture", elementID, pointerID);
         //}
     }
