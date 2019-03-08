@@ -79,7 +79,7 @@ namespace BlazorScrollbarComponent
             builder.AddAttribute(k++, "onpointermove", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerMove));
             builder.AddAttribute(k++, "onpointerup", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerUp));
 
-            builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<UIMouseEventArgs>(this, "event.preventDefault();"));
+            builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<UIMouseEventArgs>(this, "return false;")); //event.preventDefault()
 
             builder.AddAttribute(k++, "onwheel", EventCallback.Factory.Create<UIWheelEventArgs>(this, OnWheel));
 
@@ -125,10 +125,10 @@ namespace BlazorScrollbarComponent
                             bsbThumb.PreviousPosition = NewPosition;
                         }
                     }
-                    else
-                    {
-                        // BsbJsInterop.StopDrag(bsbThumb.id);
-                    }
+                    //else
+                    //{
+                    //    BsbJsInterop.StopDrag(bsbThumb.id);
+                    //}
 
                 } 
             }
