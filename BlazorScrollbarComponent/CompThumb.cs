@@ -11,6 +11,9 @@ namespace BlazorScrollbarComponent
 {
     public class CompThumb : ComponentBase, IDisposable
     {
+        [Inject]
+        private IJSRuntime jsRuntimeCurrent { get; set; }
+
         [Parameter]
         protected ComponentBase parent { get; set; }
 
@@ -23,7 +26,6 @@ namespace BlazorScrollbarComponent
 
         private bool DragMode = false;
 
-        private bool FirtLoad = true;
 
         protected override void OnInit()
         {
@@ -44,12 +46,6 @@ namespace BlazorScrollbarComponent
 
         protected override void OnAfterRender()
         {
-            if (FirtLoad)
-            {
-
-                FirtLoad = false;
-                BsbJsInterop.HandleDrag(bsbThumb.id, new DotNetObjectRef(this));
-            }
 
             if (bsbThumb.compThumb == null)
             {
@@ -58,54 +54,6 @@ namespace BlazorScrollbarComponent
 
             base.OnAfterRender();
         }
-
-        [JSInvokable]
-        public void InvokeMoveFromJS(int x, int y)
-        {
-            int NewPosition;
-            int NewPosition2;
-            if (_parent.bsbScrollbar.bsbSettings.VerticalOrHorizontal)
-            {
-                NewPosition = y;
-                NewPosition2 = x;
-            }
-            else
-            {
-                NewPosition = x;
-                NewPosition2 = y;
-            }
-
-
-            if (Math.Abs(bsbThumb.PreviousPosition2 - NewPosition2) < 300) //300 is outside limit 
-            {
-                if (bsbThumb.PreviousPosition != NewPosition)
-                {
-                    _parent.bsbScrollbar.ThumbMove(NewPosition - bsbThumb.PreviousPosition);
-                    bsbThumb.PreviousPosition = NewPosition;
-                }
-            }
-            else
-            {
-                BsbJsInterop.StopDrag(bsbThumb.id);
-            }
-        }
-
-        [JSInvokable]
-        public void InvokePointerDownFromJS(int x, int y)
-        {
-
-            if (_parent.bsbScrollbar.bsbSettings.VerticalOrHorizontal)
-            {
-                bsbThumb.PreviousPosition = y;
-                bsbThumb.PreviousPosition2 = x;
-            }
-            else
-            {
-                bsbThumb.PreviousPosition = x;
-                bsbThumb.PreviousPosition2 = y;
-            }
-        }
-
 
         private void BsbThumb_PropertyChanged()
         {
@@ -126,14 +74,14 @@ namespace BlazorScrollbarComponent
             builder.AddAttribute(k++, "height", bsbThumb.height);
             builder.AddAttribute(k++, "fill", bsbThumb.fill);
 
-            //builder.AddAttribute(k++, "onmousedown", OnMouseDown);
-            //builder.AddAttribute(k++, "onmousemove", OnMouseMove);
 
-            //builder.AddAttribute(k++, "pointerdown", OnPointerDown);
-            //builder.AddAttribute(k++, "pointermove", OnPointerMove);
-            //builder.AddAttribute(k++, "pointerup", OnPointerUp);
+            builder.AddAttribute(k++, "onpointerdown", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerDown));
+            builder.AddAttribute(k++, "onpointermove", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerMove));
+            builder.AddAttribute(k++, "onpointerup", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerUp));
 
-            builder.AddAttribute(k++, "onwheel", OnWheel);
+            builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<UIMouseEventArgs>(this, "event.preventDefault();"));
+
+            builder.AddAttribute(k++, "onwheel", EventCallback.Factory.Create<UIWheelEventArgs>(this, OnWheel));
 
             builder.CloseElement();
 
@@ -147,99 +95,72 @@ namespace BlazorScrollbarComponent
 
         }
 
-        private void OnMouseMove(UIMouseEventArgs e)
-        {
-            if (e.Buttons == 1)
-            {
-                int NewPosition;
-                if (_parent.bsbScrollbar.bsbSettings.VerticalOrHorizontal)
-                {
-                    NewPosition = (int)e.ClientY;
-                }
-                else
-                {
-                    NewPosition = (int)e.ClientX;
-                }
-
-                if (bsbThumb.PreviousPosition != NewPosition)
-                {
-                    _parent.bsbScrollbar.ThumbMove(NewPosition - bsbThumb.PreviousPosition);
-                    bsbThumb.PreviousPosition = NewPosition;
-                }
-
-            }
-        }
-
-        private void OnMouseDown(UIMouseEventArgs e)
-        {
-            if (_parent.bsbScrollbar.bsbSettings.VerticalOrHorizontal)
-            {
-                bsbThumb.PreviousPosition = (int)e.ClientY;
-            }
-            else
-            {
-                bsbThumb.PreviousPosition = (int)e.ClientX;
-            }
-        }
-
-
         private void OnPointerMove(UIPointerEventArgs e)
         {
             if (DragMode)
             {
-
+               
 
                 if (e.Buttons == 1)
                 {
                     int NewPosition;
+                    int NewPosition2;
                     if (_parent.bsbScrollbar.bsbSettings.VerticalOrHorizontal)
                     {
                         NewPosition = (int)e.ClientY;
+                        NewPosition2 = (int)e.ClientX;
                     }
                     else
                     {
                         NewPosition = (int)e.ClientX;
+                        NewPosition2 = (int)e.ClientY;
                     }
 
-                    if (bsbThumb.PreviousPosition != NewPosition)
+
+                    if (Math.Abs(bsbThumb.PreviousPosition2 - NewPosition2) < 300) //300 is outside limit 
                     {
-                        _parent.bsbScrollbar.ThumbMove(NewPosition - bsbThumb.PreviousPosition);
-                        bsbThumb.PreviousPosition = NewPosition;
+                        if (bsbThumb.PreviousPosition != NewPosition)
+                        {
+                            _parent.bsbScrollbar.ThumbMove(NewPosition - bsbThumb.PreviousPosition);
+                            bsbThumb.PreviousPosition = NewPosition;
+                        }
+                    }
+                    else
+                    {
+                        // BsbJsInterop.StopDrag(bsbThumb.id);
                     }
 
-                }
+                } 
             }
         }
 
         private void OnPointerDown(UIPointerEventArgs e)
         {
+            BsbJsInterop.SetPointerCapture(jsRuntimeCurrent, bsbThumb.id, e.PointerId);
+            DragMode = true;
 
-
-            //BsbJsInterop.SetPointerCapture(bsbThumb.id, e.PointerId);
-            //DragMode = true;
-
-            //if (_parent.bsbScrollbar.bsbSettings.VerticalOrHorizontal)
-            //{
-            //    bsbThumb.PreviousPosition = (int)e.ClientY;
-            //}
-            //else
-            //{
-            //    bsbThumb.PreviousPosition = (int)e.ClientX;
-            //}
+            if (_parent.bsbScrollbar.bsbSettings.VerticalOrHorizontal)
+            {
+                bsbThumb.PreviousPosition = (int)e.ClientY;
+                bsbThumb.PreviousPosition2 = (int)e.ClientX;
+            }
+            else
+            {
+                bsbThumb.PreviousPosition = (int)e.ClientX;
+                bsbThumb.PreviousPosition2 = (int)e.ClientY;
+            }
         }
 
 
         private void OnPointerUp(UIPointerEventArgs e)
         {
-
-
-            //BsbJsInterop.releasePointerCapture(bsbThumb.id, e.PointerId);
+            BsbJsInterop.releasePointerCapture(jsRuntimeCurrent, bsbThumb.id, e.PointerId);
             DragMode = false;
         }
 
         public void Dispose()
         {
-          //  bsbThumb.PropertyChanged -= BsbThumb_PropertyChanged;
+
         }
     }
 }

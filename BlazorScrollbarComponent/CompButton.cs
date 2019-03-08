@@ -42,7 +42,7 @@ namespace BlazorScrollbarComponent
             builder.AddAttribute(k++, "width", bsbButton.width);
             builder.AddAttribute(k++, "height", bsbButton.height);
             builder.AddAttribute(k++, "fill", bsbButton.fill);
-            builder.AddAttribute(k++, "onclick", Clicked);
+            builder.AddAttribute(k++, "onclick", EventCallback.Factory.Create<UIMouseEventArgs>(this, Clicked));
             builder.CloseElement();
 
             base.BuildRenderTree(builder);

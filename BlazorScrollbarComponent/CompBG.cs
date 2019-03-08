@@ -60,9 +60,9 @@ namespace BlazorScrollbarComponent
             builder.AddAttribute(k++, "width", bsbBG.width);
             builder.AddAttribute(k++, "height", bsbBG.height);
             builder.AddAttribute(k++, "fill", bsbBG.fill);
-            builder.AddAttribute(k++, "onclick", Clicked);
+            builder.AddAttribute(k++, "onclick", EventCallback.Factory.Create<UIMouseEventArgs>(this, Clicked));
 
-            builder.AddAttribute(k++, "onwheel", OnWheel);
+            builder.AddAttribute(k++, "onwheel", EventCallback.Factory.Create<UIWheelEventArgs>(this, OnWheel));
 
             builder.CloseElement();
 

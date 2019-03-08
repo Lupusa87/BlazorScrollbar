@@ -11,8 +11,7 @@ namespace BlazorScrollbarComponent
 {
     public class CompBlazorScrollbar: ComponentBase,IDisposable
     {
-        [Inject]
-        private IJSRuntime jsRuntimeCurrent { get; set; }
+        
 
         [Parameter]
         protected BsbSettings bsbSettings { get; set; }
@@ -31,8 +30,6 @@ namespace BlazorScrollbarComponent
 
         protected override void OnInit()
         {
-
-            BsbJsInterop.jsRuntime = jsRuntimeCurrent;
 
             bsbScrollbar.compBlazorScrollbar = this;
             bsbScrollbar.PropertyChanged = BsbScrollbar_PropertyChanged;
@@ -125,8 +122,6 @@ namespace BlazorScrollbarComponent
 
         public void Dispose()
         {
-            BsbJsInterop.UnHandleDrag(bsbScrollbar.bsbThumb.id);
-            
         }
 
 
