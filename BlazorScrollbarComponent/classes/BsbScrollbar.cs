@@ -29,6 +29,9 @@ namespace BlazorScrollbarComponent.classes
 
         internal double Step { get; set; } = 0;
 
+
+        private CompsTransfer compsTransfer = new CompsTransfer();
+
         internal void ThumbMove(double p)
         {
 
@@ -85,9 +88,62 @@ namespace BlazorScrollbarComponent.classes
         }
 
 
+        private void SaveCompInstances()
+        {
+            compsTransfer = new CompsTransfer();
+
+
+            if (bsbBgBeforeThumb != null)
+            {
+                if (bsbBgBeforeThumb.compBG != null)
+                {
+                    compsTransfer.BgBeforeThumb = bsbBgBeforeThumb.compBG;
+                }
+            }
+
+            if (bsbThumb != null)
+            {
+                if (bsbThumb.compThumb != null)
+                {
+                    compsTransfer.Thumb = bsbThumb.compThumb;
+                }
+            }
+
+
+            if (bsbBgAfterThumb != null)
+            {
+                if (bsbBgAfterThumb.compBG != null)
+                {
+                    compsTransfer.BgAfterThumb = bsbBgAfterThumb.compBG;
+                }
+            }
+
+        }
+
+        private void LoadCompInstances()
+        {
+            if (compsTransfer.BgBeforeThumb != null)
+            {
+                bsbBgBeforeThumb.compBG = compsTransfer.BgBeforeThumb;
+            }
+
+
+            if (compsTransfer.Thumb != null)
+            {
+                bsbThumb.compThumb = compsTransfer.Thumb;
+            }
+
+            if (compsTransfer.BgAfterThumb != null)
+            {
+                bsbBgAfterThumb.compBG = compsTransfer.BgAfterThumb;
+            }
+        }
+
+
+
         internal void Initialize()
         {
-
+            SaveCompInstances();
 
             if (bsbSettings.VerticalOrHorizontal)
             {
@@ -102,7 +158,7 @@ namespace BlazorScrollbarComponent.classes
                     fill = bsbSettings.bsbStyle.ButtonColor,
                 };
 
-
+                
 
                 bsbBgBeforeThumb = new BsbBG
                 {
@@ -226,6 +282,9 @@ namespace BlazorScrollbarComponent.classes
          
             bsbThumb.PreviousPosition = 0;
             bsbThumb.PreviousPosition2 = 0;
+
+            LoadCompInstances();
+
         }
 
 

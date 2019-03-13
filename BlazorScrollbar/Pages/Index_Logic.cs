@@ -102,16 +102,16 @@ namespace BlazorScrollbar.Pages
         {
 
             CompBlazorScrollbar1.SetScrollTotalWidth(1200);
-           // CompBlazorScrollbar1.SetScrollPosition(10);
-           // StateHasChanged();
+
+            Cmd2();
+
+
         }
 
         public void Cmd2()
         {
-
-            //CompBlazorScrollbar1.SetScrollTotalWidth(1200);
              CompBlazorScrollbar1.SetScrollPosition(10);
-            //StateHasChanged();
+     
         }
 
     }
