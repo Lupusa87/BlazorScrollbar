@@ -51,10 +51,12 @@ namespace BlazorScrollbarComponent.classes
 
                 if (VerticalOrHorizontal)
                 {
+                    ButtonSize = width;
                     ThumbWaySize = height - ButtonSize * 2;
                 }
                 else
                 {
+                    ButtonSize = height;
                     ThumbWaySize = width - ButtonSize * 2;
                 }
 

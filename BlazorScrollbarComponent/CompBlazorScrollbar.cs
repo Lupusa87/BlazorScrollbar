@@ -28,14 +28,23 @@ namespace BlazorScrollbarComponent
 
         public double CurrentPosition { get; internal set; } = 0;
 
+        
+        //private bool EnableRender = true;
+
+
         protected override void OnInit()
         {
-
             bsbScrollbar.compBlazorScrollbar = this;
             bsbScrollbar.PropertyChanged = BsbScrollbar_PropertyChanged;
 
             base.OnInit();
         }
+
+
+        //protected override bool ShouldRender()
+        //{
+        //    return EnableRender;
+        //}
 
 
         protected override void OnParametersSet()
@@ -58,21 +67,25 @@ namespace BlazorScrollbarComponent
         {
             if (IsVisible)
             {
-                StateHasChanged();
+                Refresh();
             }
         }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+            //if (EnableRender)
+            //{
 
-            if (IsVisible)
-            {
-                Cmd_Render(0, builder);
-            }
+                base.BuildRenderTree(builder);
 
+                if (IsVisible)
+                {
+                    Cmd_Render(0, builder);
+                }
 
-            base.BuildRenderTree(builder);
-           
+                               
+                //EnableRender = false;
+            //}
         }
 
 
@@ -98,9 +111,9 @@ namespace BlazorScrollbarComponent
             builder.AddAttribute(k++, "parent", this);
             builder.CloseComponent();
 
-
             builder.OpenComponent<CompThumb>(k++);
             builder.AddAttribute(k++, "bsbThumb", bsbScrollbar.bsbThumb);
+            builder.AddAttribute(k++, "EnableRender", true);
             builder.AddAttribute(k++, "parent", this);
             builder.CloseComponent();
 
@@ -120,6 +133,14 @@ namespace BlazorScrollbarComponent
         }
 
 
+        internal void Refresh()
+        {
+            //EnableRender = true;
+            StateHasChanged();  
+        }
+
+
+
         public void Dispose()
         {
         }
@@ -127,66 +148,77 @@ namespace BlazorScrollbarComponent
 
         public void SetScrollTotalWidth(double w)
         {
-          
-            bsbScrollbar.bsbSettings.ScrollTotalSize = w;
-
-     
-            IsVisible = bsbScrollbar.bsbSettings.initialize();
-            if (IsVisible)
+            if (bsbScrollbar.bsbSettings.ScrollTotalSize != w)
             {
-                bsbScrollbar.Initialize();
+                bsbScrollbar.bsbSettings.ScrollTotalSize = w;
 
-                StateHasChanged();
+                CurrentPosition = 0;
+
+                IsVisible = bsbScrollbar.bsbSettings.initialize();
+                if (IsVisible)
+                {
+                    bsbScrollbar.Initialize();
+                    Refresh();
+                }
+
             }
-            
-
         }
 
         public void SetScrollVisibleWidth(double w)
         {
-            
-                bsbScrollbar.bsbSettings.ScrollVisibleSize = w;
-            IsVisible = bsbScrollbar.bsbSettings.initialize();
-
-            if (IsVisible)
+            if (bsbScrollbar.bsbSettings.ScrollVisibleSize != w)
             {
-                bsbScrollbar.Initialize();
+                bsbScrollbar.bsbSettings.ScrollVisibleSize = w;
 
-                StateHasChanged();
+                CurrentPosition = 0;
+
+                IsVisible = bsbScrollbar.bsbSettings.initialize();
+
+                if (IsVisible)
+                {
+                    bsbScrollbar.Initialize();
+                    Refresh();
+                }
             }
-
         }
 
 
         public void SetScrollPosition(double p)
         {
-            if (IsVisible)
-            {
-                bsbScrollbar.Position = 0;
 
-                if (p == 0)
+            if (CurrentPosition != p)
+            {
+                if (IsVisible)
                 {
-                    bsbScrollbar.ThumbMove(0);
+
+                    bsbScrollbar.Position = 0;
+
+                    if (p == 0)
+                    {
+                        bsbScrollbar.ThumbMove(0);
+                    }
+                    else
+                    {
+                        bsbScrollbar.ThumbMove(p / bsbScrollbar.bsbSettings.ScrollScale);
+
+                    }
+
                 }
-                else
-                { 
-                    bsbScrollbar.ThumbMove(p / bsbScrollbar.bsbSettings.ScrollScale);
-                }
-                StateHasChanged();
             }
+        
 
         }
 
         public void SetMaxScrollPosition()
         {
-            if (IsVisible)
+            if (!IsOnMaxPosition())
             {
-                // value is more then max but it will be limited to max inside this method
-                bsbScrollbar.ThumbMove(bsbScrollbar.bsbSettings.ScrollTotalSize / bsbScrollbar.bsbSettings.ScrollScale);
-
-                StateHasChanged();
+                if (IsVisible)
+                {
+                    // value is more then max but it will be limited to max inside this method
+                    bsbScrollbar.ThumbMove(bsbScrollbar.bsbSettings.ScrollTotalSize / bsbScrollbar.bsbSettings.ScrollScale);
+                }
             }
-
         }
 
 

@@ -26,10 +26,12 @@ namespace BlazorScrollbarComponent
 
         private bool DragMode = false;
 
+        [Parameter]
+        public bool EnableRender { get; set; } = true;
 
         protected override void OnInit()
         {
-
+            EnableRender = true;
             DragMode = false;
 
             Subscribe();
@@ -37,6 +39,13 @@ namespace BlazorScrollbarComponent
             _parent = parent as CompBlazorScrollbar;
         }
 
+
+
+
+        protected override bool ShouldRender()
+        {
+            return EnableRender;
+        }
 
         internal void Subscribe()
         {
@@ -46,7 +55,6 @@ namespace BlazorScrollbarComponent
 
         protected override void OnAfterRender()
         {
-
             if (bsbThumb.compThumb == null)
             {
                 bsbThumb.compThumb = this;
@@ -57,35 +65,41 @@ namespace BlazorScrollbarComponent
 
         private void BsbThumb_PropertyChanged()
         {
+            EnableRender = true;
             StateHasChanged();
         }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+            if (EnableRender)
+            {
 
-            int k = -1;
+                base.BuildRenderTree(builder);
+
+                int k = -1;
+
+                builder.OpenElement(k++, "rect");
+                builder.AddAttribute(k++, "id", bsbThumb.id);
+                builder.AddAttribute(k++, "x", bsbThumb.x);
+                builder.AddAttribute(k++, "y", bsbThumb.y);
+                builder.AddAttribute(k++, "width", bsbThumb.width);
+                builder.AddAttribute(k++, "height", bsbThumb.height);
+                builder.AddAttribute(k++, "fill", bsbThumb.fill);
 
 
-            builder.OpenElement(k++, "rect");
-            builder.AddAttribute(k++, "id", bsbThumb.id);
-            builder.AddAttribute(k++, "x", bsbThumb.x);
-            builder.AddAttribute(k++, "y", bsbThumb.y);
-            builder.AddAttribute(k++, "width", bsbThumb.width);
-            builder.AddAttribute(k++, "height", bsbThumb.height);
-            builder.AddAttribute(k++, "fill", bsbThumb.fill);
+                builder.AddAttribute(k++, "onpointerdown", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerDown));
+                builder.AddAttribute(k++, "onpointermove", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerMove));
 
+                builder.AddAttribute(k++, "onpointerup", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerUp));
 
-            builder.AddAttribute(k++, "onpointerdown", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerDown));
-            builder.AddAttribute(k++, "onpointermove", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerMove));
-            builder.AddAttribute(k++, "onpointerup", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerUp));
+                builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<UIMouseEventArgs>(this, "return false;")); //event.preventDefault()
 
-            builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<UIMouseEventArgs>(this, "return false;")); //event.preventDefault()
+                builder.AddAttribute(k++, "onwheel", EventCallback.Factory.Create<UIWheelEventArgs>(this, OnWheel));
 
-            builder.AddAttribute(k++, "onwheel", EventCallback.Factory.Create<UIWheelEventArgs>(this, OnWheel));
+                builder.CloseElement();
 
-            builder.CloseElement();
-
-            base.BuildRenderTree(builder);
+                EnableRender = false;
+            }
         }
 
 
@@ -99,7 +113,6 @@ namespace BlazorScrollbarComponent
         {
             if (DragMode)
             {
-               
 
                 if (e.Buttons == 1)
                 {

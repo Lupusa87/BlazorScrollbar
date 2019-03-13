@@ -15,10 +15,10 @@ namespace BlazorScrollbarComponent.classes
 
         internal BsbSettings bsbSettings { get; set; }
 
-        internal BsbButton bsbButton1 { get; set; }
-        internal BsbButton bsbButton2 { get; set; }
+        internal BsbButton bsbButton1 { get; set; } 
+        internal BsbButton bsbButton2 { get; set; } 
 
-        internal BsbBG bsbBgBeforeThumb { get; set; }
+        internal BsbBG bsbBgBeforeThumb { get; set; } 
         internal BsbBG bsbBgAfterThumb { get; set; }
 
         internal BsbThumb bsbThumb { get; set; }
@@ -31,7 +31,7 @@ namespace BlazorScrollbarComponent.classes
 
         internal void ThumbMove(double p)
         {
-          
+
             Position += p;
 
             if (Position < 0)
@@ -47,20 +47,21 @@ namespace BlazorScrollbarComponent.classes
                 //   BsbJsInterop.StopDrag(bsbThumb.id);
             }
 
-            SetPosition();
 
+
+            SetPosition();
 
 
             compBlazorScrollbar.CurrentPosition = Position * bsbSettings.ScrollScale;
 
-         
             compBlazorScrollbar.OnPositionChange?.Invoke(compBlazorScrollbar.CurrentPosition);
+
         }
 
 
         internal void SetPosition()
         {
-            
+          
             if (bsbSettings.VerticalOrHorizontal)
             {
                 bsbThumb.y = bsbSettings.ButtonSize + Position;
@@ -71,28 +72,23 @@ namespace BlazorScrollbarComponent.classes
 
             }
 
-           
-
             ReArrangeBGs();
 
-            
+
             bsbThumb.InvokePropertyChanged();
 
-         
+
             bsbBgAfterThumb.InvokePropertyChanged();
 
-            
+
             bsbBgBeforeThumb.InvokePropertyChanged();
         }
-
 
 
         internal void Initialize()
         {
 
-         
 
-            
             if (bsbSettings.VerticalOrHorizontal)
             {
 
@@ -217,7 +213,7 @@ namespace BlazorScrollbarComponent.classes
 
 
             Position = 0;
-
+            
             if (bsbSettings.VerticalOrHorizontal)
             {
                MaxPosition = bsbSettings.height - (bsbSettings.ButtonSize * 2) - bsbSettings.ThumbSize;

@@ -17,7 +17,7 @@ Release 3,4 3/8/2019</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>Lupusa</Authors>
     <Version>1.0.3</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageProjectUrl>https://lupblazorscrollbar.z20.web.core.windows.net/</PackageProjectUrl>
   </PropertyGroup>
 

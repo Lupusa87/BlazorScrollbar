@@ -17,13 +17,22 @@ namespace BlazorScrollbarComponent.classes
         
         internal void InvokePropertyChanged()
         {
-
+           
             if (PropertyChanged == null)
             {
-                compThumb.Subscribe();
-            }
 
+                if (compThumb== null)
+                {
+                    Console.WriteLine("compThumb is null");
+                }
+
+
+                compThumb.Subscribe();
+               
+            }
+           
             PropertyChanged?.Invoke();
+           
         }
 
     }

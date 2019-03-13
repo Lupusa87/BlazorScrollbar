@@ -16,6 +16,6 @@ namespace BlazorScrollbarComponent.classes
         internal double width { get; set; } = 0;
         internal double height { get; set; } = 0;
         internal string style { get; set; } = string.Empty;
-        internal string fill { get; set; } = null;
+        internal string fill { get; set; } = string.Empty;
     }
 }

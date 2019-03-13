@@ -24,13 +24,14 @@ namespace BlazorScrollbarComponent.classes
 
         internal void InvokePropertyChanged()
         {
-
+            
             if (PropertyChanged == null)
             {
                 compBG.Subscribe();
             }
-
+          
             PropertyChanged?.Invoke();
+           
         }
 
     }
