@@ -29,6 +29,8 @@ namespace BlazorScrollbarComponent
         [Parameter]
         public bool EnableRender { get; set; } = true;
 
+
+
         protected override void OnInit()
         {
             EnableRender = true;
@@ -38,7 +40,6 @@ namespace BlazorScrollbarComponent
 
             _parent = parent as CompBlazorScrollbar;
         }
-
 
 
 
@@ -65,15 +66,23 @@ namespace BlazorScrollbarComponent
 
         private void BsbThumb_PropertyChanged()
         {
+            Refresh();
+        }
+
+
+        private void Refresh()
+        {
             EnableRender = true;
             StateHasChanged();
         }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+
+
             if (EnableRender)
             {
-
+               
                 base.BuildRenderTree(builder);
 
                 int k = -1;
@@ -100,6 +109,8 @@ namespace BlazorScrollbarComponent
 
                 EnableRender = false;
             }
+
+           
         }
 
 
