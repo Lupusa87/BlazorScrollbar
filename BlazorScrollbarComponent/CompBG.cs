@@ -77,16 +77,7 @@ namespace BlazorScrollbarComponent
 
         private void Clicked(UIMouseEventArgs e)
         {
-            if (bsbBG.BeforeOrAfter)
-            {
-                _parent.bsbScrollbar.ThumbMove(-_parent.bsbScrollbar.Step);
-            }
-            else
-            {
-                _parent.bsbScrollbar.ThumbMove(_parent.bsbScrollbar.Step);
-            }
-
-            
+            ClickHandler.HandleClick(e, bsbBG.BeforeOrAfter, _parent.bsbScrollbar);       
         }
 
 

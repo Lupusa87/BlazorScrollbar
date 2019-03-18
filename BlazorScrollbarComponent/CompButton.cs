@@ -51,30 +51,7 @@ namespace BlazorScrollbarComponent
 
         private void Clicked(UIMouseEventArgs e)
         {
-            if (e.CtrlKey)
-            {
-                if (bsbButton.FirstOrSecond)
-                {
-                    _parent.bsbScrollbar.ThumbMove(-10000);
-                }
-                else
-                {
-                    _parent.bsbScrollbar.ThumbMove(10000);
-                }
-            }
-            else
-            {
-                if (bsbButton.FirstOrSecond)
-                {
-                    _parent.bsbScrollbar.ThumbMove(-_parent.bsbScrollbar.Step);
-                }
-                else
-                {
-                    _parent.bsbScrollbar.ThumbMove(_parent.bsbScrollbar.Step);
-                }
-            }
-          
-
+            ClickHandler.HandleClick(e, bsbButton.FirstOrSecond, _parent.bsbScrollbar);
         }
 
 
