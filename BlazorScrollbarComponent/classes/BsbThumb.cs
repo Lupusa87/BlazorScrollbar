@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BlazorScrollbarComponent.classes
 {
-    internal class BsbThumb : BsbBaseProps
+    public class BsbThumb : BsbBaseProps
     {
 
         internal CompThumb compThumb { get; set; } = null;

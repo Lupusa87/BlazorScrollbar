@@ -1,6 +1,7 @@
 ﻿using BlazorScrollbarComponent;
 using BlazorScrollbarComponent.classes;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace BlazorScrollbar.Pages
 {
-    public class Index_Logic : ComponentBase
+    public partial class Index
     {
-    
+        [Inject]
+        private IJSRuntime jsRuntime { get; set; }
 
         public CompBlazorScrollbar CompBlazorScrollbar1;
         public CompBlazorScrollbar CompBlazorScrollbar2;
@@ -18,15 +20,16 @@ namespace BlazorScrollbar.Pages
         public int P1 = 0;
         public int P2 = 0;
 
+        private bool FirtsLoad = true;
         public BsbSettings bsbSettings1 { get; set; } = new BsbSettings();
 
         public BsbSettings bsbSettings2 { get; set; } = new BsbSettings();
 
 
-        public bool FirtsLoad = true;
-
-        protected override void OnInit()
+        protected override void OnInitialized()
         {
+
+            BScrollbarCJsInterop.jsRuntime = jsRuntime;
 
             bsbSettings1 = new BsbSettings("VericalScroll")
             {
@@ -63,23 +66,21 @@ namespace BlazorScrollbar.Pages
             bsbSettings2.initialize();
 
 
-            base.OnInit();
+            base.OnInitialized();
         }
 
 
-        protected override void OnAfterRender()
+        protected override void OnAfterRender(bool firstRender)
         {
             if (FirtsLoad)
             {
                 FirtsLoad = false;
-
                 CompBlazorScrollbar1.OnPositionChange = OnPositionChanged1;
                 CompBlazorScrollbar2.OnPositionChange = OnPositionChanged2;
-
-                
+  
             }
 
-            base.OnAfterRender();
+            base.OnAfterRender(firstRender);
 
         }
 

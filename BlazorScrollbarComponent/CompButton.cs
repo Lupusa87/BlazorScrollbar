@@ -1,28 +1,29 @@
 ﻿using BlazorScrollbarComponent.classes;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Web;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+
 
 namespace BlazorScrollbarComponent
 {
     internal class CompButton : ComponentBase, IDisposable
     {
         [Parameter]
-        protected ComponentBase parent { get; set; }
+        public ComponentBase parent { get; set; }
 
 
         [Parameter]
-        protected BsbButton bsbButton { get; set; }
+        public BsbButton bsbButton { get; set; }
 
         private CompBlazorScrollbar _parent;
 
-        protected override void OnInit()
+        protected override void OnInitialized()
         {
             bsbButton.PropertyChanged = BsbButton_PropertyChanged;
             _parent = parent as CompBlazorScrollbar;
+
+            base.OnInitialized();
         }
 
         private void BsbButton_PropertyChanged()
@@ -42,14 +43,14 @@ namespace BlazorScrollbarComponent
             builder.AddAttribute(k++, "width", bsbButton.width);
             builder.AddAttribute(k++, "height", bsbButton.height);
             builder.AddAttribute(k++, "fill", bsbButton.fill);
-            builder.AddAttribute(k++, "onclick", EventCallback.Factory.Create<UIMouseEventArgs>(this, Clicked));
+            builder.AddAttribute(k++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, Clicked));
             builder.CloseElement();
 
             base.BuildRenderTree(builder);
         }
 
 
-        private void Clicked(UIMouseEventArgs e)
+        private void Clicked(MouseEventArgs e)
         {
             ClickHandler.HandleClick(e, bsbButton.FirstOrSecond, _parent.bsbScrollbar);
         }

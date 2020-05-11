@@ -1,4 +1,4 @@
-﻿window.BsbJsFunctions = {
+﻿window.BScrollbarCJsFunctions = {
     alertmsg: function (m) {
         alert(m);
         return true;

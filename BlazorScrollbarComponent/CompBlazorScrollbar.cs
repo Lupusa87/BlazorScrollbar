@@ -1,6 +1,6 @@
 ﻿using BlazorScrollbarComponent.classes;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace BlazorScrollbarComponent
         
 
         [Parameter]
-        protected BsbSettings bsbSettings { get; set; }
+        public BsbSettings bsbSettings { get; set; }
 
         [Parameter]
         public Action<double> OnPositionChange { get; set; }
@@ -32,12 +32,12 @@ namespace BlazorScrollbarComponent
         //private bool EnableRender = true;
 
 
-        protected override void OnInit()
+        protected override void OnInitialized()
         {
             bsbScrollbar.compBlazorScrollbar = this;
             bsbScrollbar.PropertyChanged = BsbScrollbar_PropertyChanged;
 
-            base.OnInit();
+            base.OnInitialized();
         }
 
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BlazorScrollbarComponent.classes
 {
-    internal class BsbBaseProps
+    public class BsbBaseProps
     {
         internal Action PropertyChanged;
 

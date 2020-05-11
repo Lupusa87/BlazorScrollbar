@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,7 @@ namespace BlazorScrollbarComponent.classes
 {
     internal static class ClickHandler
     {
-        internal static void HandleClick(UIMouseEventArgs e, bool FirstOrSecond, BsbScrollbar bsbScrollbar)
+        internal static void HandleClick(MouseEventArgs e, bool FirstOrSecond, BsbScrollbar bsbScrollbar)
         {
             if (e.CtrlKey)
             {

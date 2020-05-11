@@ -1,28 +1,29 @@
 ﻿using BlazorScrollbarComponent.classes;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Web;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+
 
 namespace BlazorScrollbarComponent
 {
     internal class CompBG : ComponentBase, IDisposable
     {
         [Parameter]
-        protected ComponentBase parent { get; set; }
+        public ComponentBase parent { get; set; }
 
 
         [Parameter]
-        protected BsbBG bsbBG { get; set; }
+        public BsbBG bsbBG { get; set; }
 
         private CompBlazorScrollbar _parent;
 
-        protected override void OnInit()
+        protected override void OnInitialized()
         {
             Subscribe();
             _parent = parent as CompBlazorScrollbar;
+
+            base.OnInitialized();
         }
 
         internal void Subscribe()
@@ -32,7 +33,7 @@ namespace BlazorScrollbarComponent
 
 
 
-        protected override void OnAfterRender()
+        protected override void OnAfterRender(bool firstRender)
         {
            
             if (bsbBG.compBG == null)
@@ -40,7 +41,7 @@ namespace BlazorScrollbarComponent
                 bsbBG.compBG = this;
             }
 
-            base.OnAfterRender();
+            base.OnAfterRender(firstRender);
         }
 
         private void BsbBG_PropertyChanged()
@@ -60,22 +61,22 @@ namespace BlazorScrollbarComponent
             builder.AddAttribute(k++, "width", bsbBG.width);
             builder.AddAttribute(k++, "height", bsbBG.height);
             builder.AddAttribute(k++, "fill", bsbBG.fill);
-            builder.AddAttribute(k++, "onclick", EventCallback.Factory.Create<UIMouseEventArgs>(this, Clicked));
+            builder.AddAttribute(k++, "onclick", EventCallback.Factory.Create<MouseEventArgs>(this, Clicked));
 
-            builder.AddAttribute(k++, "onwheel", EventCallback.Factory.Create<UIWheelEventArgs>(this, OnWheel));
+            builder.AddAttribute(k++, "onwheel", EventCallback.Factory.Create<WheelEventArgs>(this, OnWheel));
 
             builder.CloseElement();
 
             base.BuildRenderTree(builder);
         }
 
-        public void OnWheel(UIWheelEventArgs e)
+        public void OnWheel(WheelEventArgs e)
         {
                 _parent.bsbScrollbar.CmdWhell(e.DeltaY > 0);
 
         }
 
-        private void Clicked(UIMouseEventArgs e)
+        private void Clicked(MouseEventArgs e)
         {
             ClickHandler.HandleClick(e, bsbBG.BeforeOrAfter, _parent.bsbScrollbar);       
         }

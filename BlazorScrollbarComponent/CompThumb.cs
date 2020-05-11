@@ -1,11 +1,10 @@
 ﻿using BlazorScrollbarComponent.classes;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+
 
 namespace BlazorScrollbarComponent
 {
@@ -15,11 +14,11 @@ namespace BlazorScrollbarComponent
         private IJSRuntime jsRuntimeCurrent { get; set; }
 
         [Parameter]
-        protected ComponentBase parent { get; set; }
+        public ComponentBase parent { get; set; }
 
 
         [Parameter]
-        internal BsbThumb bsbThumb { get; set; }
+        public BsbThumb bsbThumb { get; set; }
 
         private CompBlazorScrollbar _parent;
 
@@ -31,7 +30,7 @@ namespace BlazorScrollbarComponent
 
 
 
-        protected override void OnInit()
+        protected override void OnInitialized()
         {
             EnableRender = true;
             DragMode = false;
@@ -39,6 +38,8 @@ namespace BlazorScrollbarComponent
             Subscribe();
 
             _parent = parent as CompBlazorScrollbar;
+
+            base.OnInitialized();
         }
 
 
@@ -54,14 +55,14 @@ namespace BlazorScrollbarComponent
         }
 
 
-        protected override void OnAfterRender()
+        protected override void OnAfterRender(bool firstRender)
         {
             if (bsbThumb.compThumb == null)
             {
                 bsbThumb.compThumb = this;
             }
 
-            base.OnAfterRender();
+            base.OnAfterRender(firstRender);
         }
 
         private void BsbThumb_PropertyChanged()
@@ -96,14 +97,15 @@ namespace BlazorScrollbarComponent
                 builder.AddAttribute(k++, "fill", bsbThumb.fill);
 
 
-                builder.AddAttribute(k++, "onpointerdown", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerDown));
-                builder.AddAttribute(k++, "onpointermove", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerMove));
+                builder.AddAttribute(k++, "onpointerdown", EventCallback.Factory.Create<PointerEventArgs>(this, OnPointerDown));
+                builder.AddAttribute(k++, "onpointermove", EventCallback.Factory.Create<PointerEventArgs>(this, OnPointerMove));
 
-                builder.AddAttribute(k++, "onpointerup", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerUp));
+                builder.AddAttribute(k++, "onpointerup", EventCallback.Factory.Create<PointerEventArgs>(this, OnPointerUp));
 
-                builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<UIMouseEventArgs>(this, "return false;")); //event.preventDefault()
+                builder.AddEventPreventDefaultAttribute(k++, "onmousemove", true);
+                //builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<MouseEventArgs>(this, "return false;")); //event.preventDefault()
 
-                builder.AddAttribute(k++, "onwheel", EventCallback.Factory.Create<UIWheelEventArgs>(this, OnWheel));
+                builder.AddAttribute(k++, "onwheel", EventCallback.Factory.Create<WheelEventArgs>(this, OnWheel));
 
                 builder.CloseElement();
 
@@ -114,13 +116,13 @@ namespace BlazorScrollbarComponent
         }
 
 
-        private void OnWheel(UIWheelEventArgs e)
+        private void OnWheel(WheelEventArgs e)
         {
             _parent.bsbScrollbar.CmdWhell(e.DeltaY > 0);
 
         }
 
-        private void OnPointerMove(UIPointerEventArgs e)
+        private void OnPointerMove(PointerEventArgs e)
         {
             if (DragMode)
             {
@@ -158,9 +160,9 @@ namespace BlazorScrollbarComponent
             }
         }
 
-        private void OnPointerDown(UIPointerEventArgs e)
+        private void OnPointerDown(PointerEventArgs e)
         {
-            BsbJsInterop.SetPointerCapture(jsRuntimeCurrent, bsbThumb.id, e.PointerId);
+            BScrollbarCJsInterop.SetPointerCapture(jsRuntimeCurrent, bsbThumb.id, e.PointerId);
             DragMode = true;
 
             if (_parent.bsbScrollbar.bsbSettings.VerticalOrHorizontal)
@@ -176,9 +178,9 @@ namespace BlazorScrollbarComponent
         }
 
 
-        private void OnPointerUp(UIPointerEventArgs e)
+        private void OnPointerUp(PointerEventArgs e)
         {
-            BsbJsInterop.releasePointerCapture(jsRuntimeCurrent, bsbThumb.id, e.PointerId);
+            BScrollbarCJsInterop.releasePointerCapture(jsRuntimeCurrent, bsbThumb.id, e.PointerId);
             DragMode = false;
         }
 

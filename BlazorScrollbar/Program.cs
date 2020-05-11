@@ -1,16 +1,24 @@
-﻿using Microsoft.AspNetCore.Blazor.Hosting;
+﻿    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using System.Text;
+    using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+    using Microsoft.Extensions.DependencyInjection;
+    using System.Net.Http;
 
-namespace BlazorScrollbar
-{
-    public class Program
+    namespace BlazorScrollbar
     {
-        public static void Main(string[] args)
+        public class Program
         {
-            CreateHostBuilder(args).Build().Run();
-        }
+            public static async Task Main(string[] args)
+            {
+                var builder = WebAssemblyHostBuilder.CreateDefault(args);
+                builder.RootComponents.Add<App>("app");
 
-        public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
-            BlazorWebAssemblyHost.CreateDefaultBuilder()
-                .UseBlazorStartup<Startup>();
+                builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+
+                await builder.Build().RunAsync();
+            }
+        }
     }
-}
