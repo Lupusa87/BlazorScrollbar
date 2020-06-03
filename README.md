@@ -15,4 +15,12 @@ Please send [email](mailto:VakhtangiAbashidze@gmail.com) if you consider to **hi
 This is Blazor scrollbar prototype.
 
 
+Component is available on [nuget](https://www.nuget.org/packages/BlazorScrollbarComponent/)
+
+After installing package please add bellow script to your index.html
+
+```
+<script src="_content/BlazorScrollbarComponent/BScrollbarCJsInterop.js"></script>
+```
+
 demo - https://lupblazordemos.z13.web.core.windows.net/PageScrollbar
